@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E310FFD1A236F05008F5345 /* TrailColorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E310FFC1A236F05008F5345 /* TrailColorUtil.m */; };
 		6E322DE31A1B127300FE4B45 /* ConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E322DE21A1B127300FE4B45 /* ConfigModel.m */; };
 		6E5DEF9C1A1EF92D00B5B326 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5DEF9B1A1EF92D00B5B326 /* SettingsViewController.m */; };
 		6E661DFC19F4C68D00481D4D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E661DFB19F4C68D00481D4D /* main.m */; };
@@ -51,6 +52,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6E310FFB1A236F05008F5345 /* TrailColorUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrailColorUtil.h; sourceTree = "<group>"; };
+		6E310FFC1A236F05008F5345 /* TrailColorUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrailColorUtil.m; sourceTree = "<group>"; };
 		6E322DDE1A1B120000FE4B45 /* ConfigModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigModel.h; sourceTree = "<group>"; };
 		6E322DE21A1B127300FE4B45 /* ConfigModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigModel.m; sourceTree = "<group>"; };
 		6E5DEF991A1EF86E00B5B326 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
@@ -165,6 +168,8 @@
 				6E322DE21A1B127300FE4B45 /* ConfigModel.m */,
 				6E661E0019F4C68D00481D4D /* MapViewController.h */,
 				6E661E0119F4C68D00481D4D /* MapViewController.m */,
+				6E310FFB1A236F05008F5345 /* TrailColorUtil.h */,
+				6E310FFC1A236F05008F5345 /* TrailColorUtil.m */,
 				6E5DEF991A1EF86E00B5B326 /* SettingsViewController.h */,
 				6E5DEF9B1A1EF92D00B5B326 /* SettingsViewController.m */,
 				6E661E0319F4C68D00481D4D /* Main.storyboard */,
@@ -375,6 +380,7 @@
 				6E5DEF9C1A1EF92D00B5B326 /* SettingsViewController.m in Sources */,
 				6E661DFC19F4C68D00481D4D /* main.m in Sources */,
 				6E84EB9E1A20076D009094A8 /* WebKitViewController.m in Sources */,
+				6E310FFD1A236F05008F5345 /* TrailColorUtil.m in Sources */,
 				6E322DE31A1B127300FE4B45 /* ConfigModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

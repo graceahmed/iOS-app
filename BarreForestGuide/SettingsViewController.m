@@ -36,8 +36,17 @@ GMSMapViewType rowToMapType(int row) {
 - (void)viewDidLoad {
   [super viewDidLoad];
   self.configModel = [ConfigModel getConfigModel];
+  self.trailColorUtil = [TrailColorUtil getTrailColorUtil];
   currentMapTypeRow = mapTypeToRow(self.configModel.mapType);
   [self.autoFollowGPS setOn:self.configModel.mapTracksGPS animated:NO];
+
+  // FIXME - remove
+  self.configModel.mapSeason = summer_map_season;
+  if (self.configModel.trailTypeEnabled==nil)
+    self.configModel.trailTypeEnabled = [[NSMutableDictionary alloc] init];
+  [self.configModel.trailTypeEnabled setObject:@1 forKey:@1];
+  [self.configModel.trailTypeEnabled setObject:@1 forKey:@6];
+  [self.trailColorUtil invalidateColorCache];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

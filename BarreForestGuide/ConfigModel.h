@@ -11,12 +11,18 @@
 
 @interface ConfigModel : NSObject <NSCoding>
 
-@property BOOL            mapTracksGPS;
-@property GMSMapViewType  mapType;
+typedef enum { summer_map_season, winter_map_season, auto_map_season } map_season_t;
+
+@property BOOL                  mapTracksGPS;
+@property GMSMapViewType        mapType;
+@property map_season_t          mapSeason;
+@property NSMutableDictionary  *trailTypeEnabled;
 
 + (ConfigModel*)getConfigModel;
 - (id) initFromDefaults;
 - (void) saveToDefaults;
+
+- (BOOL) isSummerMapSeason;
 
 @end
 

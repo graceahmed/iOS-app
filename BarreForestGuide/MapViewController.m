@@ -27,6 +27,7 @@
   // Do any additional setup after loading the view, typically from a nib.
 
   self.configModel = [ConfigModel getConfigModel];
+  self.trailColorUtil = [TrailColorUtil getTrailColorUtil];
 
   UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
   self.webViewController = [sb instantiateViewControllerWithIdentifier:@"POI Detail View"];
@@ -50,7 +51,7 @@
   mapView_.mapType = self.configModel.mapType;
   //mapView_.myLocationEnabled = YES;
 
-  [self drawMapObjects];
+  //[self drawMapObjects];
 
   //[mapView_ addObserver:self
   //           forKeyPath:@"myLocation"
@@ -76,40 +77,62 @@
                               pathForResource:@"BarreForestGuide"
                                        ofType:@"sqlite"];
   if (sqlite3_open([mapDataDBName_ UTF8String], &mapDataDB_) == SQLITE_OK) {
-    NSString *mapobjQuerySQL =
-        [NSString stringWithFormat:@"select trail_id,lattitude,longitude from coordinates order by trail_id, rowid;"];
-    sqlite3_stmt *mapobjQueryStmt = nil;
-    if (sqlite3_prepare_v2(mapDataDB_, [mapobjQuerySQL UTF8String], -1, &mapobjQueryStmt, NULL) == SQLITE_OK) {
-      GMSMutablePath *trailpath = nil;
-      int prev_trail_id = -1;
-      while(sqlite3_step(mapobjQueryStmt) == SQLITE_ROW) {
-        int trail_id = sqlite3_column_int(mapobjQueryStmt, 0);
-        double lattitude = sqlite3_column_double(mapobjQueryStmt, 1);
-        double longitude = sqlite3_column_double(mapobjQueryStmt, 2);
-        //NSLog(@"trail_id %d (%f, %f)", trail_id, lattitude, longitude);
-        if (prev_trail_id != trail_id) {
+
+    char *season = [self.configModel isSummerMapSeason] ? "summer" : "winter";
+
+    NSString *trailQuerySQL =
+        [NSString stringWithFormat:@"select map_object_id,lattitude,longitude from trail,coordinate " \
+                                    "where coordinate.map_object_id=trail.id and summer_uses_id=? order by map_object_id,seq;"];
+    NSString *trailTypeQuerySQL =
+        [NSString stringWithFormat:@"select distinct %s_uses_id from trail;", season];
+    sqlite3_stmt *trailQueryStmt = nil;
+    sqlite3_stmt *trailTypeQueryStmt = nil;
+    if (sqlite3_prepare_v2(mapDataDB_, [trailQuerySQL UTF8String], -1, &trailQueryStmt, NULL) == SQLITE_OK) {
+      if (sqlite3_prepare_v2(mapDataDB_, [trailTypeQuerySQL UTF8String], -1, &trailTypeQueryStmt, NULL) == SQLITE_OK) {
+        while(sqlite3_step(trailTypeQueryStmt) == SQLITE_ROW) {
+          int trail_type_id = sqlite3_column_int(trailTypeQueryStmt, 0);
+          //NSLog(@"trail_type_id %d", trail_type_id);
+          UIColor *trail_type_color = [self.trailColorUtil getTrailTypeColor:trail_type_id];
+          //if (trail_type_color) NSLog(@"got color %@ for trail_type_id %d", trail_type_color, trail_type_id); // FIXME - remove
+          //if (trail_type_color==nil) trail_type_color = [UIColor redColor];
+          sqlite3_reset(trailQueryStmt);
+          sqlite3_bind_int(trailQueryStmt, 1, trail_type_id);
+          GMSMutablePath *trailpath = nil;
+          int prev_trail_id = -1;
+          while(sqlite3_step(trailQueryStmt) == SQLITE_ROW) {
+            int trail_id = sqlite3_column_int(trailQueryStmt, 0);
+            double lattitude = sqlite3_column_double(trailQueryStmt, 1);
+            double longitude = sqlite3_column_double(trailQueryStmt, 2);
+            //NSLog(@"trail_id %d (%f, %f)", trail_id, lattitude, longitude);
+            if (prev_trail_id != trail_id) {
+              if (trailpath && ([trailpath count]>1)) {
+                GMSPolyline *trailpoly = [GMSPolyline polylineWithPath:trailpath];
+                trailpoly.strokeColor = trail_type_color;
+                trailpoly.map = mapView_;
+                //NSLog(@"Putting Polyline on the map");
+              }
+              trailpath = [GMSMutablePath path];
+              prev_trail_id = trail_id;
+            }
+            [trailpath addCoordinate:CLLocationCoordinate2DMake(lattitude, longitude)];
+          }
           if (trailpath && ([trailpath count]>1)) {
             GMSPolyline *trailpoly = [GMSPolyline polylineWithPath:trailpath];
+            trailpoly.strokeColor = trail_type_color;
             trailpoly.map = mapView_;
-            //NSLog(@"Putting Polyline on the map");
           }
-          trailpath = [GMSMutablePath path];
-          prev_trail_id = trail_id;
         }
-        [trailpath addCoordinate:CLLocationCoordinate2DMake(lattitude, longitude)];
-      }
-      if (trailpath && ([trailpath count]>1)) {
-        GMSPolyline *trailpoly = [GMSPolyline polylineWithPath:trailpath];
-        trailpoly.map = mapView_;
-      }
-      sqlite3_finalize(mapobjQueryStmt);
+        sqlite3_finalize(trailTypeQueryStmt);
+      } else
+        NSLog(@"Failed to query database for trail types!");
+      sqlite3_finalize(trailQueryStmt);
     } else
-      NSLog(@"Failed to query database for Polyline points!");
+      NSLog(@"Failed to prepare database query for trails!");
 
     NSMutableDictionary *POI_Icons = [[NSMutableDictionary alloc] init];
 
     NSString *POITypeQuerySQL =
-        [NSString stringWithFormat:@"select rowid,name from poi_types;"];
+        [NSString stringWithFormat:@"select id,english_poi_type from poi_type;"];
     sqlite3_stmt *POITypeQueryStmt = nil;
     if (sqlite3_prepare_v2(mapDataDB_, [POITypeQuerySQL UTF8String], -1, &POITypeQueryStmt, NULL) == SQLITE_OK) {
       while(sqlite3_step(POITypeQueryStmt) == SQLITE_ROW) {
@@ -117,9 +140,8 @@
         char *name = (char*)sqlite3_column_text(POITypeQueryStmt, 1);
         NSString *iconName = [NSString stringWithFormat:@"%s.png", name];
         iconName = [iconName stringByReplacingOccurrencesOfString:@" " withString:@""];
-        //NSLog(@"Icon name: %@", iconName);
+        //NSLog(@"Icon name: %@, id: %d", iconName, type);
         UIImage *icon = [UIImage imageNamed:iconName];
-        //if (icon) [POI_Icons setObject:icon atIndexedSubscript:type];
         [POI_Icons setObject:icon forKey:[NSNumber numberWithInt:type]];
       }
       sqlite3_finalize(POITypeQueryStmt);
@@ -128,7 +150,7 @@
     }
 
     NSString *POIQuerySQL =
-        [NSString stringWithFormat:@"select name,type,lattitude,longitude,url from points_of_interest;"];
+        [NSString stringWithFormat:@"select name,type_id,lattitude,longitude,url from map_object,point_of_interest,coordinate where map_object.id=point_of_interest.id and coordinate.map_object_id=map_object.id;"];
     sqlite3_stmt *POIQueryStmt = nil;
     if (sqlite3_prepare_v2(mapDataDB_, [POIQuerySQL UTF8String], -1, &POIQueryStmt, NULL) == SQLITE_OK) {
       while(sqlite3_step(POIQueryStmt) == SQLITE_ROW) {
