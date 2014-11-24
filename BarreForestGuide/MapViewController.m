@@ -194,36 +194,57 @@
   UIView *contents = [[UIView alloc] initWithFrame: CGRectZero];
   UILabel *title_label = [[UILabel alloc] initWithFrame: CGRectZero];
   title_label.text = marker.title;
+  title_label.textAlignment = NSTextAlignmentCenter;
   [title_label sizeToFit];
-  UIButton *moreinfo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-  [moreinfo setTitle:@"More info" forState:UIControlStateNormal];
-  [moreinfo sizeToFit];
-  [moreinfo addTarget:self action:@selector(launchWebView:) forControlEvents:UIControlEventTouchUpInside];
-  int numbuttons = 1;
-  UIButton *share = 0;
-  share = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-  if (share) {
-    numbuttons++;
-    [share setTitle:@"Share" forState:UIControlStateNormal];
-    [share sizeToFit];
+  NSMutableArray *buttons = [[NSMutableArray alloc] init];
+  if (marker.snippet) {
+    UIButton *moreinfo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [moreinfo setTitle:@"More info" forState:UIControlStateNormal];
+    [moreinfo addTarget:self action:@selector(launchWebView:) forControlEvents:UIControlEventTouchUpInside];
+    [buttons addObject:moreinfo];
   }
-  int w = title_label.bounds.size.width;
-  int h = title_label.bounds.size.height;
-  int bw = moreinfo.frame.size.width + share.frame.size.width;
-  if (share) bw = bw + share.frame.size.width;
-  if (w<bw) w=bw;
-  int bh = moreinfo.frame.size.height;
-  if ((share) && (bh<share.frame.size.height)) bh=share.frame.size.height;
-  if (h<bh) h=bh;
+  if (self.configModel.sharingEnabled) {
+    UIButton *share = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [share setTitle:@"Share" forState:UIControlStateNormal];
+    [share addTarget:self action:@selector(launchShare:) forControlEvents:UIControlEventTouchUpInside];
+    [buttons addObject:share];
+  }
+  int numbuttons = [buttons count];
+  int tlw = title_label.bounds.size.width;
+  int tlh = title_label.bounds.size.height;
+  int cbw = 0; // Cumulative button widths
+  int mbw = 0; // Maximum button width
+  int mbh = 0; // Maximum button height
+  for(UIButton *btn in buttons) {
+    [btn sizeToFit];
+    btn.frame = CGRectInset(btn.frame, -5.0f, 0);
+    btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+    int bw = btn.frame.size.width;
+    int bh = btn.frame.size.height;
+    cbw = cbw + bw;
+    if (mbw<bw) mbw=bw;
+    if (mbh<bh) mbh=bh;
+  }
+  int w = tlw;
+  int h = tlh;
+  if (w<cbw) w=cbw;
+  if (h<mbh) h=mbh;
   title_label.frame = CGRectMake(0, 0, w, h);
-  moreinfo.frame = CGRectMake(0, h, w/numbuttons, h);
-  if (share)
-    share.frame = CGRectMake(w/numbuttons, h, w/numbuttons, h);
-  contents.frame = CGRectMake(0, 0, w, 2*h);
+  int offset = 0;
+  for(UIButton *btn in buttons) {
+    int btnw = btn.frame.size.width;
+    int btnh = btn.frame.size.height;
+    // If the label text is wider than all of the buttons, if they all are
+    //   allocated the maximum button width, do that
+    if (tlw > (mbw*numbuttons)) btnw = tlw/numbuttons;
+    else if (tlw > cbw) btnw = btnw + (tlw-cbw)*(mbw-btnw)/((mbw*numbuttons)-cbw);
+    btn.frame = CGRectMake(offset, h, btnw, btnh);
+    offset += btnw;
+  }
+  if (numbuttons>0) h=2*h;
+  contents.frame = CGRectMake(0, 0, w, h);
   [contents addSubview:title_label];
-  [contents addSubview:moreinfo];
-  if (share)
-    [contents addSubview:share];
+  for(UIButton *btn in buttons) [contents addSubview:btn];
   return(contents);
 }
 
@@ -313,6 +334,10 @@ double markerInfoHeightPad = 10.0f;
   NSLog(@"launchWebView");
   self.webViewController.url = mapView_.selectedMarker.snippet;
   [self.navigationController pushViewController:self.webViewController animated:YES];
+}
+
+- (void)launchShare:(id)sender {
+  NSLog(@"launchShare");
 }
 
 - (void)locationManager:(CLLocationManager*)manager

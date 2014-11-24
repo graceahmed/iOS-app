@@ -47,6 +47,7 @@ GMSMapViewType rowToMapType(int row) {
   [self.configModel.trailTypeEnabled setObject:@1 forKey:@1];
   [self.configModel.trailTypeEnabled setObject:@1 forKey:@6];
   [self.trailColorUtil invalidateColorCache];
+  self.configModel.sharingEnabled = YES;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
