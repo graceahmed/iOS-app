@@ -196,18 +196,21 @@
   title_label.text = marker.title;
   title_label.textAlignment = NSTextAlignmentCenter;
   [title_label sizeToFit];
+  NSArray *button_names = @[ @"More info", @"Share" ];
+  NSDictionary *button_specs = @{
+    @"More info" : @[ ^{return(marker.snippet!=nil);},             @"launchWebView:" ],
+    @"Share"     : @[ ^{return(self.configModel.sharingEnabled);}, @"launchShare:"   ],
+  };
   NSMutableArray *buttons = [[NSMutableArray alloc] init];
-  if (marker.snippet) {
-    UIButton *moreinfo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [moreinfo setTitle:@"More info" forState:UIControlStateNormal];
-    [moreinfo addTarget:self action:@selector(launchWebView:) forControlEvents:UIControlEventTouchUpInside];
-    [buttons addObject:moreinfo];
-  }
-  if (self.configModel.sharingEnabled) {
-    UIButton *share = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [share setTitle:@"Share" forState:UIControlStateNormal];
-    [share addTarget:self action:@selector(launchShare:) forControlEvents:UIControlEventTouchUpInside];
-    [buttons addObject:share];
+  for(NSString *name in button_names) {
+    BOOL(^pred)(void) = button_specs[name][0];
+    NSString *sel  = button_specs[name][1];
+    if (pred()) {
+      UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+      [btn setTitle:name forState:UIControlStateNormal];
+      [btn addTarget:self action:NSSelectorFromString(sel) forControlEvents:UIControlEventTouchUpInside];
+      [buttons addObject:btn];
+    }
   }
   int numbuttons = [buttons count];
   int tlw = title_label.bounds.size.width;
