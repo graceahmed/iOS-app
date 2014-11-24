@@ -22,6 +22,8 @@
 @property                            ConfigModel          *configModel;
 @property                            TrailColorUtil       *trailColorUtil;
 
+- (void)initializeLocationManager;
+- (void)startStopLocationUpdates;
 - (void)drawMapObjects;
 - (void)launchWebView:(id)sender;
 

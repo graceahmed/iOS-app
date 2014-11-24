@@ -32,38 +32,35 @@
   UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
   self.webViewController = [sb instantiateViewControllerWithIdentifier:@"POI Detail View"];
 
-  if ([CLLocationManager locationServicesEnabled]) {
-    if (locationManager_ == nil)
-      locationManager_ = [[CLLocationManager alloc] init];
-    locationManager_.desiredAccuracy = kCLLocationAccuracyBest;
-    locationManager_.distanceFilter = 1;
-    locationManager_.delegate = self;
-    if ([locationManager_ respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-      [locationManager_ requestWhenInUseAuthorization];
-    }
-    [locationManager_ startUpdatingLocation];
-  }
+  [self initializeLocationManager];
 
   GMSCameraPosition *camera = [ GMSCameraPosition cameraWithLatitude:44.1525 longitude:-72.475 zoom:14];
   mapView_ =  [GMSMapView mapWithFrame:mapView.bounds camera:camera];
   mapView_.settings.compassButton = YES;
   mapView_.settings.myLocationButton = YES;
   mapView_.mapType = self.configModel.mapType;
-  //mapView_.myLocationEnabled = YES;
-
-  //[self drawMapObjects];
-
-  //[mapView_ addObserver:self
-  //           forKeyPath:@"myLocation"
-  //              options:NSKeyValueObservingOptionNew
-  //              context:NULL];
 
   [mapView addSubview:mapView_];
   mapView_.delegate = self;
-  
-  //dispatch_async(dispatch_get_main_queue(), ^{
-  //    mapView_.myLocationEnabled = YES;
-  //});
+}
+
+- (void)initializeLocationManager {
+  if ([CLLocationManager locationServicesEnabled]) {
+    if (locationManager_ == nil)
+      locationManager_ = [[CLLocationManager alloc] init];
+    locationManager_.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager_.distanceFilter = 1;
+    locationManager_.delegate = self;
+    if ([locationManager_ respondsToSelector:@selector(requestWhenInUseAuthorization)])
+      [locationManager_ requestWhenInUseAuthorization];
+  }
+}
+
+- (void)startStopLocationUpdates {
+  if ((self.configModel.mapTracksGPS))
+    [locationManager_ startUpdatingLocation];
+  else
+    [locationManager_ stopUpdatingLocation];
 }
 
 - (void)drawMapObjects {
@@ -185,6 +182,7 @@
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   mapView_.mapType = self.configModel.mapType;
+  [self startStopLocationUpdates];
   [self drawMapObjects];
 }
 
@@ -295,6 +293,7 @@ double markerInfoHeightPad = 10.0f;
 }
 
 - (void)mapView:(GMSMapView*)_mapView didChangeCameraPosition:(GMSCameraPosition*)position {
+  //NSLog(@"didChangeCameraPosition: %@", position);
   if (markerInfoContentView_) {
     if (_mapView.selectedMarker != nil)
       [self moveInfoWindowContentsToMarker:_mapView.selectedMarker];
@@ -306,6 +305,7 @@ double markerInfoHeightPad = 10.0f;
 }
 
 - (void)mapView:(GMSMapView*)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
+  //NSLog(@"didTapAtCoordinate: (%f, %f)", coordinate.latitude, coordinate.longitude);
   if (markerInfoContentView_) {
     [markerInfoContentView_ removeFromSuperview];
     markerInfoContentView_ = nil;
@@ -313,6 +313,7 @@ double markerInfoHeightPad = 10.0f;
 }
 
 - (BOOL)mapView:(GMSMapView*)mapView didTapMarker:(GMSMarker*)marker {
+  //NSLog(@"didTapMarker: %@", marker);
   if (markerInfoContentView_) {
     [markerInfoContentView_ removeFromSuperview];
     markerInfoContentView_ = nil;
@@ -322,7 +323,7 @@ double markerInfoHeightPad = 10.0f;
 
 /*
 - (void)mapView:(GMSMapView*)mapView didTapInfoWindowOfMarker:(GMSMarker*)marker {
-  NSLog(@"didTapInfoWindowOfMarker");
+  //NSLog(@"didTapInfoWindowOfMarker");
 }
 */
 
@@ -334,7 +335,7 @@ double markerInfoHeightPad = 10.0f;
 }
 
 - (void)launchWebView:(id)sender {
-  NSLog(@"launchWebView");
+  //NSLog(@"launchWebView");
   self.webViewController.url = mapView_.selectedMarker.snippet;
   [self.navigationController pushViewController:self.webViewController animated:YES];
 }
@@ -351,15 +352,22 @@ double markerInfoHeightPad = 10.0f;
   NSTimeInterval age = [locDate timeIntervalSinceNow];
   if (abs(age) < 15.0) {
     GMSCameraUpdate *locUpdate = [GMSCameraUpdate setTarget:location.coordinate zoom:17];
-    //[mapView_ animateWithCameraUpdate:locUpdate];
+    [mapView_ animateWithCameraUpdate:locUpdate];
   }
-  NSLog(@"Got a new location update");
+  [self startStopLocationUpdates];
+  //NSLog(@"Got a new location update");
 }
 
 - (void)locationManager:(CLLocationManager*)manager
        didFailWithError:(NSError*)error
 {
   NSLog(@"Got a location error");
+}
+
+- (BOOL)didTapMyLocationButtonForMapView:(GMSMapView*)mapView {
+  NSLog(@"didTapMyLocationButtonForMapView");
+  [locationManager_ startUpdatingLocation];
+  return YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -370,10 +378,6 @@ double markerInfoHeightPad = 10.0f;
 - (void)dealloc {
   if (mapDataDB_)
     sqlite3_close(mapDataDB_);
-
-  //[mapView_ removeObserver:self
-  //              forKeyPath:@"myLocation"
-  //                 context:NULL];
 }
 
 @end
