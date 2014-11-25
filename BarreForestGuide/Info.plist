@@ -43,7 +43,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSLocationWhenInUseUageDescription</key>
-	<string>Used for tracking the device's location on the map</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Used for tracking the device&apos;s location on the map</string>
 </dict>
 </plist>

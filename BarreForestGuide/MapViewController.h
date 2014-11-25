@@ -10,6 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import "ConfigModel.h"
+#import "TrailColorUtil.h"
 #import "WebKitViewController.h"
 
 @interface MapViewController : UIViewController
@@ -19,7 +20,10 @@
 @property (nonatomic, weak) IBOutlet UIView               *mapView;
 @property                            WebKitViewController *webViewController;
 @property                            ConfigModel          *configModel;
+@property                            TrailColorUtil       *trailColorUtil;
 
+- (void)initializeLocationManager;
+- (void)startStopLocationUpdates;
 - (void)drawMapObjects;
 - (void)launchWebView:(id)sender;
 

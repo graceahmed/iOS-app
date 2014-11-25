@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "ConfigModel.h"
+#import "TrailColorUtil.h"
 
 @interface SettingsViewController : UITableViewController
 
-@property (nonatomic, weak) IBOutlet UISwitch *autoFollowGPS;
-@property ConfigModel *configModel;
+@property (nonatomic, weak) IBOutlet UISwitch        *autoFollowGPS;
+@property                            ConfigModel     *configModel;
+@property                            TrailColorUtil  *trailColorUtil;
 
 @end
 
