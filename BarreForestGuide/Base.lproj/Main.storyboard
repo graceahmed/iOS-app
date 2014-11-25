@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iwK-x8-Mac">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Main - Map-->
@@ -16,35 +17,40 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JaY-bl-l3E" userLabel="mapView">
+                            <view contentMode="scaleToFill" id="JaY-bl-l3E" userLabel="mapView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GOi-Tg-7gq">
-                                <rect key="frame" x="523" y="151" width="40" height="40"/>
-                                <state key="normal" image="filter_button_40.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="Jwo-uM-ajR" kind="show" id="KI3-Vy-ZWr"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q1D-OB-ZTM">
-                                <rect key="frame" x="500" y="88" width="86" height="40"/>
-                                <state key="normal" image="button_menu_40.png">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q1D-OB-ZTM">
+                                <rect key="frame" x="555" y="89" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="rnm-QP-48C"/>
+                                </constraints>
+                                <state key="normal" title="Menu" image="button_menu_40.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <segue destination="CB2-6X-iUJ" kind="show" id="L1x-yr-jVr"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GOi-Tg-7gq">
+                                <rect key="frame" x="555" y="139" width="40" height="40"/>
+                                <state key="normal" title="Filter" image="filter_button_40.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Jwo-uM-ajR" kind="show" id="KI3-Vy-ZWr"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="JaY-bl-l3E" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="2CE-Ly-4Mt"/>
-                            <constraint firstItem="JaY-bl-l3E" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="IHt-5O-8Xa"/>
-                            <constraint firstItem="JaY-bl-l3E" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="P0E-no-M1c"/>
-                            <constraint firstAttribute="trailing" secondItem="JaY-bl-l3E" secondAttribute="trailing" id="SLx-uy-gMw"/>
+                            <constraint firstItem="q1D-OB-ZTM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="55" id="BZG-7m-VcP"/>
+                            <constraint firstItem="q1D-OB-ZTM" firstAttribute="trailing" secondItem="GOi-Tg-7gq" secondAttribute="trailing" id="PW0-Cx-8u8"/>
+                            <constraint firstItem="GOi-Tg-7gq" firstAttribute="top" secondItem="q1D-OB-ZTM" secondAttribute="bottom" constant="10" id="T2Z-dy-RLu"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="q1D-OB-ZTM" secondAttribute="trailing" constant="-5" id="bMv-sc-vPU"/>
+                            <constraint firstItem="GOi-Tg-7gq" firstAttribute="leading" secondItem="q1D-OB-ZTM" secondAttribute="leading" id="cBx-Vb-bHQ"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="j3U-6N-Dic"/>
