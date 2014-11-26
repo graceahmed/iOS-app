@@ -372,7 +372,7 @@ double markerInfoHeightPad = 10.0f;
 - (void)locationManager:(CLLocationManager*)manager
        didFailWithError:(NSError*)error
 {
-  NSLog(@"Got a location error");
+  NSLog(@"Got a location error: %@", error);
 }
 
 - (BOOL)didTapMyLocationButtonForMapView:(GMSMapView*)mapView {
