@@ -18,8 +18,9 @@
 int mapTypeToRow(GMSMapViewType mapType) {
   switch (mapType) {
     case kGMSTypeNormal:    return(0);  break;
-    case kGMSTypeSatellite: return(1);  break;
-    case kGMSTypeTerrain:   return(2);  break;
+    case kGMSTypeTerrain:   return(1);  break;
+    case kGMSTypeSatellite: return(2);  break;
+    case kGMSTypeHybrid:    return(3);  break;
     default:                return(-1); break;
   }
 }
@@ -27,8 +28,9 @@ int mapTypeToRow(GMSMapViewType mapType) {
 GMSMapViewType rowToMapType(int row) {
   switch (row) {
     case 0:  return(kGMSTypeNormal);    break;
-    case 1:  return(kGMSTypeSatellite); break;
-    case 2:  return(kGMSTypeTerrain);   break;
+    case 1:  return(kGMSTypeTerrain);   break;
+    case 2:  return(kGMSTypeSatellite); break;
+    case 3:  return(kGMSTypeHybrid);    break;
     default: return(kGMSTypeNormal);    break;
   }
 }
