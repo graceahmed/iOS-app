@@ -13,6 +13,7 @@
 
 @implementation SettingsViewController {
   int currentMapTypeRow;
+  int currentSeasonRow;
 }
 
 int mapTypeToRow(GMSMapViewType mapType) {
@@ -35,15 +36,33 @@ GMSMapViewType rowToMapType(int row) {
   }
 }
 
+int seasonToRow(map_season_t season) {
+  switch (season) {
+    case auto_map_season:   return(0);  break;
+    case summer_map_season: return(1);  break;
+    case winter_map_season: return(2);  break;
+    default:                return(-1); break;
+  }
+}
+
+map_season_t rowToSeason(int row) {
+  switch (row) {
+    case 0:  return(auto_map_season);   break;
+    case 1:  return(summer_map_season); break;
+    case 2:  return(winter_map_season); break;
+    default: return(auto_map_season);   break;
+  }
+}
+
 - (void)viewDidLoad {
   [super viewDidLoad];
   self.configModel = [ConfigModel getConfigModel];
   self.trailColorUtil = [TrailColorUtil getTrailColorUtil];
   currentMapTypeRow = mapTypeToRow(self.configModel.mapType);
+  currentSeasonRow = seasonToRow(self.configModel.mapSeason);
   [self.autoFollowGPS setOn:self.configModel.mapTracksGPS animated:NO];
 
   // FIXME - remove
-  self.configModel.mapSeason = summer_map_season;
   if (self.configModel.trailTypeEnabled==nil)
     self.configModel.trailTypeEnabled = [[NSMutableDictionary alloc] init];
   [self.configModel.trailTypeEnabled setObject:@1 forKey:@1];
@@ -67,11 +86,20 @@ GMSMapViewType rowToMapType(int row) {
   NSUInteger section = [indexPath section];
   NSUInteger row = [indexPath row];
 
-  if (section==0) {
-    if (row==currentMapTypeRow)
-      cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    else
-      cell.accessoryType = UITableViewCellAccessoryNone;
+  switch (section) {
+    case 0:
+      if (row==currentMapTypeRow)
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+      else
+        cell.accessoryType = UITableViewCellAccessoryNone;
+      break;
+    case 1:
+      if (row==currentSeasonRow)
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+      else
+        cell.accessoryType = UITableViewCellAccessoryNone;
+      break;
+    default: break;
   }
 
   return cell;
@@ -83,9 +111,16 @@ GMSMapViewType rowToMapType(int row) {
   NSUInteger section = [indexPath section];
   NSUInteger row = [indexPath row];
 
-  if (section==0) {
-    currentMapTypeRow = row;
-    self.configModel.mapType = rowToMapType(row);
+  switch (section) {
+    case 0:
+      currentMapTypeRow = row;
+      self.configModel.mapType = rowToMapType(row);
+      break;
+    case 1:
+      currentSeasonRow = row;
+      self.configModel.mapSeason = rowToSeason(row);
+      break;
+    default: break;
   }
 
   [self.tableView reloadData];
