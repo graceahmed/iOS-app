@@ -23,6 +23,7 @@
 @synthesize mapView;
 
 - (void)viewDidLoad {
+  NSLog(@"viewDidLoad");
   [super viewDidLoad];
   // Do any additional setup after loading the view, typically from a nib.
 
@@ -39,9 +40,26 @@
   mapView_.settings.compassButton = YES;
   mapView_.settings.myLocationButton = YES;
   mapView_.mapType = self.configModel.mapType;
+  mapView_.padding = UIEdgeInsetsMake(20, 5, 5, 5);
 
   [mapView addSubview:mapView_];
   mapView_.delegate = self;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+  NSLog(@"viewWillAppear: animated=%d\n", animated);
+  [self.navigationController setNavigationBarHidden:YES animated:animated];
+  [super viewWillAppear:animated];
+  mapView_.settings.compassButton = YES;
+  mapView_.mapType = self.configModel.mapType;
+  [self startStopLocationUpdates];
+  [self drawMapObjects];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+  NSLog(@"viewWillDisappear: animated=%d\n", animated);
+  [self.navigationController setNavigationBarHidden:NO animated:animated];
+  [super viewWillDisappear:animated];
 }
 
 - (void)initializeLocationManager {
@@ -177,13 +195,6 @@
       NSLog(@"Failed to query database for POI data!");
   } else
     NSLog(@"Failed to open database!");
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-  [super viewWillAppear:animated];
-  mapView_.mapType = self.configModel.mapType;
-  [self startStopLocationUpdates];
-  [self drawMapObjects];
 }
 
 - (UIView*)mapView:(GMSMapView*)mapView
