@@ -40,6 +40,8 @@
 		A01544231A1E9AEE00C26FB1 /* Store.png in Resources */ = {isa = PBXBuildFile; fileRef = A01544221A1E9AEE00C26FB1 /* Store.png */; };
 		A01544291A1E9B6500C26FB1 /* button_menu_40.png in Resources */ = {isa = PBXBuildFile; fileRef = A01544271A1E9B6500C26FB1 /* button_menu_40.png */; };
 		A015442A1A1E9B6500C26FB1 /* filter_button_40.png in Resources */ = {isa = PBXBuildFile; fileRef = A01544281A1E9B6500C26FB1 /* filter_button_40.png */; };
+		A082A06C1A2640F200B5D4DF /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A082A06B1A2640F200B5D4DF /* MenuViewController.m */; };
+		A082A06D1A2640F200B5D4DF /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A082A06B1A2640F200B5D4DF /* MenuViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,8 @@
 		A01544221A1E9AEE00C26FB1 /* Store.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Store.png; sourceTree = "<group>"; };
 		A01544271A1E9B6500C26FB1 /* button_menu_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_menu_40.png; sourceTree = "<group>"; };
 		A01544281A1E9B6500C26FB1 /* filter_button_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filter_button_40.png; sourceTree = "<group>"; };
+		A082A06A1A26408200B5D4DF /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuViewController.h; path = ../MenuViewController.h; sourceTree = "<group>"; };
+		A082A06B1A2640F200B5D4DF /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +169,7 @@
 		6E661DF819F4C68D00481D4D /* BarreForestGuide */ = {
 			isa = PBXGroup;
 			children = (
+				A082A06A1A26408200B5D4DF /* MenuViewController.h */,
 				6E661DFD19F4C68D00481D4D /* AppDelegate.h */,
 				6E661DFE19F4C68D00481D4D /* AppDelegate.m */,
 				6E322DDE1A1B120000FE4B45 /* ConfigModel.h */,
@@ -178,6 +183,7 @@
 				6E5DEF991A1EF86E00B5B326 /* SettingsViewController.h */,
 				6E5DEF9B1A1EF92D00B5B326 /* SettingsViewController.m */,
 				6E661E0319F4C68D00481D4D /* Main.storyboard */,
+				A082A06B1A2640F200B5D4DF /* MenuViewController.m */,
 				6E84EB9D1A20076D009094A8 /* WebKitViewController.m */,
 				6E84EB9F1A2007C8009094A8 /* WebKitViewController.h */,
 				6E661E0619F4C68D00481D4D /* Images.xcassets */,
@@ -381,6 +387,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E661E0219F4C68D00481D4D /* MapViewController.m in Sources */,
+				A082A06C1A2640F200B5D4DF /* MenuViewController.m in Sources */,
 				6E661DFF19F4C68D00481D4D /* AppDelegate.m in Sources */,
 				6E5DEF9C1A1EF92D00B5B326 /* SettingsViewController.m in Sources */,
 				6E661DFC19F4C68D00481D4D /* main.m in Sources */,
@@ -396,6 +403,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E661E1619F4C68E00481D4D /* BarreForestGuideTests.m in Sources */,
+				A082A06D1A2640F200B5D4DF /* MenuViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
