@@ -159,7 +159,7 @@
         iconName = [iconName stringByReplacingOccurrencesOfString:@" " withString:@""];
         //NSLog(@"Icon name: %@, id: %d", iconName, type);
         UIImage *icon = [UIImage imageNamed:iconName];
-        [POI_Icons setObject:icon forKey:type_num];
+        if (icon) [POI_Icons setObject:icon forKey:type_num];
         if ([[self.configModel.poiTypeEnabled objectForKey:type_num] boolValue]) {
           if (!enabledPOITypeIds)
             enabledPOITypeIds = [NSString stringWithFormat:@"%d", type];
