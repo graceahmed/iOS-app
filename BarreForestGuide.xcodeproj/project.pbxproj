@@ -99,7 +99,7 @@
 		A01544221A1E9AEE00C26FB1 /* Store.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Store.png; sourceTree = "<group>"; };
 		A01544271A1E9B6500C26FB1 /* button_menu_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_menu_40.png; sourceTree = "<group>"; };
 		A01544281A1E9B6500C26FB1 /* filter_button_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filter_button_40.png; sourceTree = "<group>"; };
-		A082A06A1A26408200B5D4DF /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuViewController.h; path = ../MenuViewController.h; sourceTree = "<group>"; };
+		A082A06A1A26408200B5D4DF /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		A082A06B1A2640F200B5D4DF /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
