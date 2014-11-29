@@ -23,6 +23,9 @@
 - (BOOL)isTrailTypeIdSpan:(int)trailTypeId;
 - (void)toggleTrailTypeIdEnable:(int)trailTypeId;
 
+- (int)getPoiTypeSortOrder:(int)poiTypeId;
+- (void)togglePoiTypeIdEnable:(int)poiTypeId;
+
 @end
 
 /* vim: set ai si sw=2 ts=80 ru: */

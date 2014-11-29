@@ -146,6 +146,7 @@
 
     NSMutableDictionary *POI_Icons = [[NSMutableDictionary alloc] init];
 
+    NSString *enabledPOITypeIds = nil;
     NSString *POITypeQuerySQL =
         [NSString stringWithFormat:@"select id,english_poi_type from poi_type;"];
     sqlite3_stmt *POITypeQueryStmt = nil;
@@ -154,10 +155,17 @@
         int type = sqlite3_column_int(POITypeQueryStmt, 0);
         char *name = (char*)sqlite3_column_text(POITypeQueryStmt, 1);
         NSString *iconName = [NSString stringWithFormat:@"%s.png", name];
+        NSNumber *type_num = [NSNumber numberWithInt:type];
         iconName = [iconName stringByReplacingOccurrencesOfString:@" " withString:@""];
         //NSLog(@"Icon name: %@, id: %d", iconName, type);
         UIImage *icon = [UIImage imageNamed:iconName];
-        [POI_Icons setObject:icon forKey:[NSNumber numberWithInt:type]];
+        [POI_Icons setObject:icon forKey:type_num];
+        if ([[self.configModel.poiTypeEnabled objectForKey:type_num] boolValue]) {
+          if (!enabledPOITypeIds)
+            enabledPOITypeIds = [NSString stringWithFormat:@"%d", type];
+          else
+            enabledPOITypeIds = [enabledPOITypeIds stringByAppendingFormat:@",%d", type];
+        }
       }
       sqlite3_finalize(POITypeQueryStmt);
     } else {
@@ -165,7 +173,7 @@
     }
 
     NSString *POIQuerySQL =
-        [NSString stringWithFormat:@"select name,type_id,lattitude,longitude,url from map_object,point_of_interest,coordinate where map_object.id=point_of_interest.id and coordinate.map_object_id=map_object.id;"];
+        [NSString stringWithFormat:@"select name,type_id,lattitude,longitude,url from map_object,point_of_interest,coordinate where map_object.id=point_of_interest.id and coordinate.map_object_id=map_object.id and type_id in (%@);", enabledPOITypeIds];
     sqlite3_stmt *POIQueryStmt = nil;
     if (sqlite3_prepare_v2(mapDataDB_, [POIQuerySQL UTF8String], -1, &POIQueryStmt, NULL) == SQLITE_OK) {
       while(sqlite3_step(POIQueryStmt) == SQLITE_ROW) {

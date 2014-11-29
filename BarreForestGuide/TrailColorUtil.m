@@ -20,6 +20,8 @@
   int          *trailTypeIdToDifficultyGroup;
   int          *trailTypeIdToSpanId;
   int          *trailTypeIdIsSpan;
+
+  int          *poiTypeIdSortOrder;
 }
 
 /*
@@ -54,6 +56,8 @@
     trailTypeIdToSpanId          = (int*)calloc(maxTrailTypeId+1, sizeof(int));
     trailTypeIdIsSpan            = (int*)calloc(maxTrailTypeId+1, sizeof(int));
 
+    poiTypeIdSortOrder           = (int*)calloc(maxPoiTypeId+1, sizeof(int));
+
     NSArray *t_grps = @[ @[ @"Easy", @"Walking", @"Shoe" ],
                          @[ @"Moderate", @"BikePath", @"Ski" ],
                          @[ @"Hard", @"Motor" ],
@@ -61,12 +65,17 @@
                          @[ @"Extreme", @"Unmaintained" ] ];
     NSDictionary *t_spans = @{ @"SkiShoe":      @[ @"Ski", @"Shoe" ],
                                @"MotorSkiShoe": @[ @"Motor", @"Ski", @"Shoe" ] };
+    NSArray *t_poi = @[ @"Overlook", @"Parking Lot", @"Store" ];
 
     for(int i=0; i<=maxTrailTypeId; i++) {
       trailTypeIdSortOrder[i] = maxTrailTypeId+1;
       trailTypeIdToDifficultyGroup[i] = -1;
       trailTypeIdToSpanId[i] = -1;
     }
+    for(int i=0; i<=maxPoiTypeId; i++) {
+      poiTypeIdSortOrder[i] = maxPoiTypeId+1;
+    }
+
     int order = 0;
     int groupnum = 0;
     for(NSArray *grp in t_grps) {
@@ -86,6 +95,13 @@
         int type_id = [trailTypeNameToId[tname] intValue];
         trailTypeIdToSpanId[type_id] = span_id;
       }
+    }
+
+    order = 0;
+    for(NSString *pname in t_poi) {
+      NSLog(@"pname=%@", pname);
+      int id = [poiTypeNameToId[pname] intValue];
+      poiTypeIdSortOrder[id] = order++;
     }
   }
   return(self);
@@ -194,6 +210,24 @@
     if (enabled) val = @0;
       else       val = @1;
     [self.configModel.trailTypeEnabled setObject:val forKey:ttid];
+  }
+}
+
+- (int)getPoiTypeSortOrder:(int)poiTypeId {
+  int rv = maxPoiTypeId+1;
+  if ((poiTypeId>=0) && (poiTypeId<=maxPoiTypeId))
+    rv = poiTypeIdSortOrder[poiTypeId];
+  return(rv);
+}
+
+- (void)togglePoiTypeIdEnable:(int)poiTypeId {
+  if ((poiTypeId>=0) && (poiTypeId<=maxPoiTypeId)) {
+    NSNumber *ptid = [NSNumber numberWithInt:poiTypeId];
+    BOOL enabled = [[self.configModel.poiTypeEnabled objectForKey:ptid] boolValue];
+    NSNumber *val;
+    if (enabled) val = @0;
+      else       val = @1;
+    [self.configModel.poiTypeEnabled setObject:val forKey:ptid];
   }
 }
 

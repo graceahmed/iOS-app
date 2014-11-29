@@ -63,7 +63,14 @@
         }
       }
       sqlite3_finalize(trailTypeQueryStmt);
-      trailTypeIds = [trailTypeIdsMut sortedArrayUsingComparator: ^(id obj1, id obj2) { int ord1 = [self.trailColorUtil getTrailTypeSortOrder:[obj1 intValue]]; int ord2 = [self.trailColorUtil getTrailTypeSortOrder:[obj2 intValue]]; if (ord1<ord2) return(NSOrderedAscending); else if (ord1>ord2) return(NSOrderedDescending); else return(NSOrderedSame); }];
+      trailTypeIds = [trailTypeIdsMut
+                        sortedArrayUsingComparator: ^(id obj1, id obj2) {
+                          int ord1 = [self.trailColorUtil getTrailTypeSortOrder:[obj1 intValue]];
+                          int ord2 = [self.trailColorUtil getTrailTypeSortOrder:[obj2 intValue]];
+                          if      (ord1<ord2) return(NSOrderedAscending);
+                          else if (ord1>ord2) return(NSOrderedDescending);
+                          else                return(NSOrderedSame);
+                        } ];
     } else
       NSLog(@"Failed to query database for trail types!");
 
@@ -71,7 +78,7 @@
         [NSString stringWithFormat:@"select id,english_poi_type from poi_type order by id;"];
     sqlite3_stmt *POITypeQueryStmt = nil;
     if (sqlite3_prepare_v2(mapDataDB_, [POITypeQuerySQL UTF8String], -1, &POITypeQueryStmt, NULL) == SQLITE_OK) {
-      poiTypeIds = [[NSMutableArray alloc] init];
+      NSMutableArray *poiTypeIdsMut = [[NSMutableArray alloc] init];
       poiTypeIdToName = [[NSMutableDictionary alloc] init];
       while(sqlite3_step(POITypeQueryStmt) == SQLITE_ROW) {
         int poi_type_id = sqlite3_column_int(POITypeQueryStmt, 0);
@@ -80,9 +87,17 @@
         NSNumber *poi_type_id_num = [NSNumber numberWithInt:poi_type_id];
         NSString *poi_type_name_str = [NSString stringWithUTF8String:poi_type_name];
         [poiTypeIdToName setObject:poi_type_name_str forKey:poi_type_id_num];
-        [poiTypeIds addObject:poi_type_id_num];
+        [poiTypeIdsMut addObject:poi_type_id_num];
       }
       sqlite3_finalize(POITypeQueryStmt);
+      poiTypeIds = [poiTypeIdsMut
+                      sortedArrayUsingComparator: ^(id obj1, id obj2) {
+                        int ord1 = [self.trailColorUtil getPoiTypeSortOrder:[obj1 intValue]];
+                        int ord2 = [self.trailColorUtil getPoiTypeSortOrder:[obj2 intValue]];
+                        if      (ord1<ord2) return(NSOrderedAscending);
+                        else if (ord1>ord2) return(NSOrderedDescending);
+                        else                return(NSOrderedSame);
+                      } ];
     } else
       NSLog(@"Failed to query database for POI type data!");
   } else
@@ -152,6 +167,7 @@
 
   switch (section) {
     case 0:
+      [self.trailColorUtil togglePoiTypeIdEnable:[poiTypeIds[row] intValue]];
       break;
     case 1:
       [self.trailColorUtil toggleTrailTypeIdEnable:[trailTypeIds[row] intValue]];
