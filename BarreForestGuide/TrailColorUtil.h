@@ -19,6 +19,10 @@
 
 - (UIColor*)getTrailTypeColor:(int)trailTypeID;
 
+- (int)getTrailTypeSortOrder:(int)trailTypeId;
+- (BOOL)isTrailTypeIdSpan:(int)trailTypeId;
+- (void)toggleTrailTypeIdEnable:(int)trailTypeId;
+
 @end
 
 /* vim: set ai si sw=2 ts=80 ru: */

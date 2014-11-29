@@ -19,6 +19,7 @@
     self.mapSeason = auto_map_season;
     self.sharingEnabled = NO;
     self.trailTypeEnabled = [[NSMutableDictionary alloc] init];
+    self.poiTypeEnabled = [[NSMutableDictionary alloc] init];
   }
   return(self);
 }
@@ -36,6 +37,7 @@
   self.mapSeason = [decoder decodeIntForKey:@"mapSeason"];
   self.sharingEnabled = [decoder decodeBoolForKey:@"sharingEnabled"];
   self.trailTypeEnabled = [decoder decodeObjectForKey:@"trailTypeEnabled"];
+  self.poiTypeEnabled = [decoder decodeObjectForKey:@"poiTypeEnabled"];
   return(self);
 }
 
@@ -46,7 +48,7 @@
   } else {
     self = [self init];
   }
-  NSLog(@"initFromDefaults: mapTracksGPS=%d, mapType=%d, mapSeason=%d, sharingEnabled=%d, trailTypeEnabled=%@", self.mapTracksGPS, self.mapType, self.mapSeason, self.sharingEnabled, self.trailTypeEnabled);
+  NSLog(@"initFromDefaults: mapTracksGPS=%d, mapType=%d, mapSeason=%d, sharingEnabled=%d, trailTypeEnabled=%@, poiTypeEnabled=%@", self.mapTracksGPS, self.mapType, self.mapSeason, self.sharingEnabled, self.trailTypeEnabled, self.poiTypeEnabled);
   return(self);
 }
 
@@ -56,6 +58,7 @@
   [encoder encodeInt:_mapSeason forKey:@"mapSeason"];
   [encoder encodeBool:_sharingEnabled forKey:@"sharingEnabled"];
   [encoder encodeObject:_trailTypeEnabled forKey:@"trailTypeEnabled"];
+  [encoder encodeObject:_poiTypeEnabled forKey:@"poiTypeEnabled"];
 }
 
 - (void) saveToDefaults {
@@ -70,7 +73,7 @@
   */
 
   [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"config"];
-  NSLog(@"saveToDefaults: mapTracksGPS=%d, mapType=%d, mapSeason=%d, sharingEnabled=%d, trailTypeEnabled=%@", self.mapTracksGPS, self.mapType, self.mapSeason, self.sharingEnabled, self.trailTypeEnabled);
+  NSLog(@"saveToDefaults: mapTracksGPS=%d, mapType=%d, mapSeason=%d, sharingEnabled=%d, trailTypeEnabled=%@, poiTypeEnabled=%@", self.mapTracksGPS, self.mapType, self.mapSeason, self.sharingEnabled, self.trailTypeEnabled, self.poiTypeEnabled);
 }
 
 - (BOOL) isSummerMapSeason {
