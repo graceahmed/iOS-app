@@ -55,7 +55,9 @@
         int trail_type_id = sqlite3_column_int(trailTypeQueryStmt, 0);
         char *trail_type_name = (char*)sqlite3_column_text(trailTypeQueryStmt, 1);
         NSLog(@"trail_type_id %d : %s", trail_type_id, trail_type_name);
-        if (![self.trailColorUtil isTrailTypeIdSpan:trail_type_id]) {
+        if ((![self.trailColorUtil isTrailTypeIdSpan:trail_type_id]) &&
+            (![self.trailColorUtil isTrailTypeIdOther:trail_type_id]))
+        {
           NSNumber *trail_type_id_num = [NSNumber numberWithInt:trail_type_id];
           NSString *trail_type_name_str = [NSString stringWithUTF8String:trail_type_name];
           [trailTypeIdToName setObject:trail_type_name_str forKey:trail_type_id_num];
@@ -63,6 +65,9 @@
         }
       }
       sqlite3_finalize(trailTypeQueryStmt);
+      NSNumber *other_type_id_num = [NSNumber numberWithInt:[self.trailColorUtil getTrailTypeOtherId]];
+      [trailTypeIdToName setObject:@"Other" forKey:other_type_id_num];
+      [trailTypeIdsMut addObject:other_type_id_num];
       trailTypeIds = [trailTypeIdsMut
                         sortedArrayUsingComparator: ^(id obj1, id obj2) {
                           int ord1 = [self.trailColorUtil getTrailTypeSortOrder:[obj1 intValue]];

@@ -22,7 +22,9 @@
 - (UIColor*)getDiscGolfPathColor;
 
 - (int)getTrailTypeSortOrder:(int)trailTypeId;
+- (int)getTrailTypeOtherId;
 - (BOOL)isTrailTypeIdSpan:(int)trailTypeId;
+- (BOOL)isTrailTypeIdOther:(int)trailTypeId;
 - (void)setTrailTypeIdEnable:(int)trailTypeId enable:(BOOL)enable;
 - (void)toggleTrailTypeIdEnable:(int)trailTypeId;
 

@@ -20,8 +20,10 @@
   int          *trailTypeIdSortOrder;
   int          *trailTypeIdToDifficultyGroup;
   int          *trailTypeIdIsSpan;
+  int          *trailTypeIdIsOther;
   NSDictionary *trailTypeIdToSpanIds;
   NSDictionary *trailSpanIdToTypeIds;
+  int           trailTypeOtherId;
 
   int          *poiTypeIdSortOrder;
 }
@@ -52,6 +54,7 @@
     trailTypeIdSortOrder         = (int*)calloc(maxTrailTypeId+1, sizeof(int));
     trailTypeIdToDifficultyGroup = (int*)calloc(maxTrailTypeId+1, sizeof(int));
     trailTypeIdIsSpan            = (int*)calloc(maxTrailTypeId+1, sizeof(int));
+    trailTypeIdIsOther           = (int*)calloc(maxTrailTypeId+1, sizeof(int));
 
     poiTypeIdSortOrder           = (int*)calloc(maxPoiTypeId+1, sizeof(int));
 
@@ -59,9 +62,10 @@
                          @[ @"Moderate", @"BikePath", @"Ski" ],
                          @[ @"Hard", @"Motor" ],
                          @[ @"PvtRd" ],
-                         @[ @"Extreme", @"Unmaintained" ] ];
+                         @[ @"Extreme", @"Unmaintained", @"Other" ] ];
     NSDictionary *t_spans = @{ @"SkiShoe":      @[ @"Ski", @"Shoe" ],
-                               @"MotorSkiShoe": @[ @"Motor", @"Ski", @"Shoe" ] };
+                               @"MotorSkiShoe": @[ @"Motor", @"Ski", @"Shoe" ],
+                               @"Other":        @[ @"Not", @"Skip" ] };
     NSArray *t_poi = @[ @"Overlook", @"Historical Sign", @"Parking Lot", @"Store" ];
 
     for(int i=0; i<=maxTrailTypeId; i++) {
@@ -84,6 +88,11 @@
       groupnum++;
     }
     numTrailDifficultyGroups = groupnum;
+
+    for(NSString *tname in t_spans[@"Other"]) {
+      int id = [trailTypeNameToId[tname] intValue];
+      trailTypeIdIsOther[id] = 1;
+    }
 
     NSMutableDictionary *trailTypeIdToSpanIdsMut = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *trailSpanIdToTypeIdsMut = [[NSMutableDictionary alloc] init];
@@ -174,6 +183,12 @@
         if (trail_type_id>maxTrailTypeId) maxTrailTypeId=trail_type_id;
       }
       sqlite3_finalize(trailTypeQueryStmt);
+
+      if (trailTypeNameToIdMut[@"Other"]==nil) {
+        trailTypeOtherId = ++maxTrailTypeId;
+        [trailTypeNameToIdMut setObject:[NSNumber numberWithInt:trailTypeOtherId] forKey:@"Other"];
+      }
+
       trailTypeNameToId = [NSDictionary dictionaryWithDictionary:trailTypeNameToIdMut];
     } else
       NSLog(@"Failed to query database for trail types!");
@@ -259,10 +274,19 @@
   return(rv);
 }
 
+- (int)getTrailTypeOtherId { return(trailTypeOtherId); }
+
 - (BOOL)isTrailTypeIdSpan:(int)trailTypeId {
   BOOL rv = NO;
   if ((trailTypeId>=0) && (trailTypeId<=maxTrailTypeId))
     rv = trailTypeIdIsSpan[trailTypeId];
+  return(rv);
+}
+
+- (BOOL)isTrailTypeIdOther:(int)trailTypeId {
+  BOOL rv = NO;
+  if ((trailTypeId>=0) && (trailTypeId<=maxTrailTypeId))
+    rv = trailTypeIdIsOther[trailTypeId];
   return(rv);
 }
 
@@ -278,6 +302,12 @@
       }
       if (span_enable) [self.configModel.trailTypeEnabled setObject:@1 forKey:span_id_num];
         else           [self.configModel.trailTypeEnabled removeObjectForKey:span_id_num];
+    }
+    if (trailTypeId==trailTypeOtherId) {
+      for(NSNumber *otheridnum in trailSpanIdToTypeIds[ttidnum]) {
+        if (enable) [self.configModel.trailTypeEnabled setObject:@1 forKey:otheridnum];
+          else      [self.configModel.trailTypeEnabled removeObjectForKey:otheridnum];
+      }
     }
   }
 }
