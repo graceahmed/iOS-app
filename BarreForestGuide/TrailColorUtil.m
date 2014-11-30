@@ -80,7 +80,7 @@
     int groupnum = 0;
     for(NSArray *grp in t_grps) {
       for(NSString *tname in grp) {
-        NSLog(@"tname=%@", tname);
+        //NSLog(@"tname=%@", tname);
         int id = [trailTypeNameToId[tname] intValue];
         trailTypeIdSortOrder[id] = order++;
         trailTypeIdToDifficultyGroup[id] = groupnum;
@@ -99,7 +99,7 @@
 
     order = 0;
     for(NSString *pname in t_poi) {
-      NSLog(@"pname=%@", pname);
+      //NSLog(@"pname=%@", pname);
       int id = [poiTypeNameToId[pname] intValue];
       poiTypeIdSortOrder[id] = order++;
     }
@@ -131,7 +131,7 @@
       while(sqlite3_step(trailTypeQueryStmt) == SQLITE_ROW) {
         int trail_type_id = sqlite3_column_int(trailTypeQueryStmt, 0);
         char *trail_type_name = (char*)sqlite3_column_text(trailTypeQueryStmt, 1);
-        NSLog(@"trail_type_id %d : %s", trail_type_id, trail_type_name);
+        //NSLog(@"trail_type_id %d : %s", trail_type_id, trail_type_name);
         NSString *trail_type_str = [NSString stringWithUTF8String:trail_type_name];
         [trailTypeNameToIdMut setObject:[NSNumber numberWithInt:trail_type_id] forKey:trail_type_str];
         if (trail_type_id>maxTrailTypeId) maxTrailTypeId=trail_type_id;
@@ -149,7 +149,7 @@
       while(sqlite3_step(POITypeQueryStmt) == SQLITE_ROW) {
         int poi_type_id = sqlite3_column_int(POITypeQueryStmt, 0);
         char *poi_type_name = (char*)sqlite3_column_text(POITypeQueryStmt, 1);
-        NSLog(@"poi_type_id %d : %s", poi_type_id, poi_type_name);
+        //NSLog(@"poi_type_id %d : %s", poi_type_id, poi_type_name);
         NSString *poi_type_str = [NSString stringWithUTF8String:poi_type_name];
         [poiTypeNameToIdMut setObject:[NSNumber numberWithInt:poi_type_id] forKey:poi_type_str];
         if (poi_type_id>maxPoiTypeId) maxPoiTypeId=poi_type_id;
