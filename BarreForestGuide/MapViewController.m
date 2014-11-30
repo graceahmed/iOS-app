@@ -80,7 +80,7 @@
     char *season = [self.configModel isSummerMapSeason] ? "summer" : "winter";
 
     NSString *trailQuerySQL =
-        [NSString stringWithFormat:@"select map_object_id,lattitude,longitude from trail,coordinate " \
+        [NSString stringWithFormat:@"select map_object_id,latitude,longitude from trail,coordinate " \
                                     "where coordinate.map_object_id=trail.id and %s_uses_id=? order by map_object_id,seq;", season];
     NSString *trailTypeQuerySQL =
         [NSString stringWithFormat:@"select distinct %s_uses_id from trail;", season];
@@ -100,9 +100,9 @@
           int prev_trail_id = -1;
           while(sqlite3_step(trailQueryStmt) == SQLITE_ROW) {
             int trail_id = sqlite3_column_int(trailQueryStmt, 0);
-            double lattitude = sqlite3_column_double(trailQueryStmt, 1);
+            double latitude = sqlite3_column_double(trailQueryStmt, 1);
             double longitude = sqlite3_column_double(trailQueryStmt, 2);
-            //NSLog(@"trail_id %d (%f, %f)", trail_id, lattitude, longitude);
+            //NSLog(@"trail_id %d (%f, %f)", trail_id, latitude, longitude);
             if (prev_trail_id != trail_id) {
               if (trailpath && ([trailpath count]>1)) {
                 GMSPolyline *trailpoly = [GMSPolyline polylineWithPath:trailpath];
@@ -113,7 +113,7 @@
               trailpath = [GMSMutablePath path];
               prev_trail_id = trail_id;
             }
-            [trailpath addCoordinate:CLLocationCoordinate2DMake(lattitude, longitude)];
+            [trailpath addCoordinate:CLLocationCoordinate2DMake(latitude, longitude)];
           }
           if (trailpath && ([trailpath count]>1)) {
             GMSPolyline *trailpoly = [GMSPolyline polylineWithPath:trailpath];
@@ -157,18 +157,18 @@
     }
 
     NSString *POIQuerySQL =
-        [NSString stringWithFormat:@"select name,type_id,lattitude,longitude,url from map_object,point_of_interest,coordinate where map_object.id=point_of_interest.id and coordinate.map_object_id=map_object.id and type_id in (%@);", enabledPOITypeIds];
+        [NSString stringWithFormat:@"select name,type_id,latitude,longitude,url from map_object,point_of_interest,coordinate where map_object.id=point_of_interest.id and coordinate.map_object_id=map_object.id and type_id in (%@);", enabledPOITypeIds];
     sqlite3_stmt *POIQueryStmt = nil;
     if (sqlite3_prepare_v2(mapDataDB_, [POIQuerySQL UTF8String], -1, &POIQueryStmt, NULL) == SQLITE_OK) {
       while(sqlite3_step(POIQueryStmt) == SQLITE_ROW) {
         char *name = (char*)sqlite3_column_text(POIQueryStmt, 0);
         int type = sqlite3_column_int(POIQueryStmt, 1);
-        double lattitude = sqlite3_column_double(POIQueryStmt, 2);
+        double latitude = sqlite3_column_double(POIQueryStmt, 2);
         double longitude = sqlite3_column_double(POIQueryStmt, 3);
         char *url = (char*)sqlite3_column_text(POIQueryStmt, 4);
-        //NSLog(@"POI: %s [%d] (%f, %f) - %s", name, type, lattitude, longitude, url);
+        //NSLog(@"POI: %s [%d] (%f, %f) - %s", name, type, latitude, longitude, url);
 
-        CLLocationCoordinate2D pos = CLLocationCoordinate2DMake(lattitude, longitude);
+        CLLocationCoordinate2D pos = CLLocationCoordinate2DMake(latitude, longitude);
         GMSMarker *marker = [GMSMarker markerWithPosition:pos];
         if (name) marker.title = [NSString stringWithUTF8String:name];
         if (url) marker.snippet = [NSString stringWithUTF8String:url];
