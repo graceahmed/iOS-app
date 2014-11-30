@@ -18,9 +18,14 @@
                                   GMSMapViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView               *mapView;
+@property (nonatomic, weak) IBOutlet UIButton             *myLocation;
+@property (nonatomic, weak) IBOutlet UIButton             *defaultCamera;
 @property                            WebKitViewController *webViewController;
 @property                            ConfigModel          *configModel;
 @property                            TrailColorUtil       *trailColorUtil;
+
+- (IBAction)didTapMyLocation;
+- (IBAction)didTapDefaultCamera;
 
 - (void)initializeLocationManager;
 - (void)startStopLocationUpdates;

@@ -18,6 +18,9 @@
   sqlite3           *mapDataDB_;
   NSMutableArray    *mapPolylines_;
   UIView            *markerInfoContentView_;
+  BOOL               GPStrackingEnabled;
+  BOOL               GPStrackingJustEnabled;
+  CLLocation        *barreForestCenter;
 }
 
 @synthesize mapView;
@@ -35,10 +38,10 @@
 
   [self initializeLocationManager];
 
-  GMSCameraPosition *camera = [ GMSCameraPosition cameraWithLatitude:44.1525 longitude:-72.475 zoom:14];
+  GMSCameraPosition *camera = [ GMSCameraPosition cameraWithLatitude:44.15 longitude:-72.475 zoom:13.7];
   mapView_ =  [GMSMapView mapWithFrame:mapView.bounds camera:camera];
   mapView_.settings.compassButton = YES;
-  mapView_.settings.myLocationButton = YES;
+  //mapView_.settings.myLocationButton = YES;
   mapView_.mapType = self.configModel.mapType;
   mapView_.padding = UIEdgeInsetsMake(20, 5, 5, 5);
 
@@ -60,25 +63,6 @@
   NSLog(@"viewWillDisappear: animated=%d\n", animated);
   [self.navigationController setNavigationBarHidden:NO animated:animated];
   [super viewWillDisappear:animated];
-}
-
-- (void)initializeLocationManager {
-  if ([CLLocationManager locationServicesEnabled]) {
-    if (locationManager_ == nil)
-      locationManager_ = [[CLLocationManager alloc] init];
-    locationManager_.desiredAccuracy = kCLLocationAccuracyBest;
-    locationManager_.distanceFilter = 1;
-    locationManager_.delegate = self;
-    if ([locationManager_ respondsToSelector:@selector(requestWhenInUseAuthorization)])
-      [locationManager_ requestWhenInUseAuthorization];
-  }
-}
-
-- (void)startStopLocationUpdates {
-  if ((self.configModel.mapTracksGPS))
-    [locationManager_ startUpdatingLocation];
-  else
-    [locationManager_ stopUpdatingLocation];
 }
 
 - (void)drawMapObjects {
@@ -311,18 +295,6 @@ double markerInfoHeightPad = 10.0f;
   return(win);
 }
 
-- (void)mapView:(GMSMapView*)_mapView didChangeCameraPosition:(GMSCameraPosition*)position {
-  //NSLog(@"didChangeCameraPosition: %@", position);
-  if (markerInfoContentView_) {
-    if (_mapView.selectedMarker != nil)
-      [self moveInfoWindowContentsToMarker:_mapView.selectedMarker];
-    else {
-      [markerInfoContentView_ removeFromSuperview];
-      markerInfoContentView_ = nil;
-    }
-  }
-}
-
 - (void)mapView:(GMSMapView*)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
   //NSLog(@"didTapAtCoordinate: (%f, %f)", coordinate.latitude, coordinate.longitude);
   if (markerInfoContentView_) {
@@ -363,18 +335,77 @@ double markerInfoHeightPad = 10.0f;
   NSLog(@"launchShare");
 }
 
+- (void)initializeLocationManager {
+  GPStrackingEnabled = NO;
+  if ([CLLocationManager locationServicesEnabled]) {
+    if (locationManager_ == nil)
+      locationManager_ = [[CLLocationManager alloc] init];
+    locationManager_.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager_.distanceFilter = 1;
+    locationManager_.delegate = self;
+    if ([locationManager_ respondsToSelector:@selector(requestWhenInUseAuthorization)])
+      [locationManager_ requestWhenInUseAuthorization];
+    barreForestCenter = [[CLLocation alloc] initWithLatitude:44.15 longitude:-72.48];
+  }
+}
+
+- (void)startStopLocationUpdates {
+  if (locationManager_==nil) return;
+  if ((self.configModel.mapTracksGPS)) {
+    if (!GPStrackingEnabled) {
+      [locationManager_ startUpdatingLocation];
+      GPStrackingEnabled = YES;
+      GPStrackingJustEnabled = YES;
+    }
+  } else {
+    if (GPStrackingEnabled) {
+      [locationManager_ stopUpdatingLocation];
+      GPStrackingEnabled = NO;
+    }
+  }
+}
+
+- (void)mapView:(GMSMapView*)_mapView willMove:(BOOL)gesture {
+  NSLog(@"willMove: gesture=%d", gesture);
+  if (gesture) {
+    [locationManager_ stopUpdatingLocation];
+    GPStrackingEnabled = NO;
+  }
+  self.myLocation.hidden = GPStrackingEnabled;
+}
+
+- (void)mapView:(GMSMapView*)_mapView didChangeCameraPosition:(GMSCameraPosition*)position {
+  //NSLog(@"didChangeCameraPosition: %@", position);
+  if (markerInfoContentView_) {
+    if (_mapView.selectedMarker != nil)
+      [self moveInfoWindowContentsToMarker:_mapView.selectedMarker];
+    else {
+      [markerInfoContentView_ removeFromSuperview];
+      markerInfoContentView_ = nil;
+    }
+  }
+  CLLocation *campos = [[CLLocation alloc] initWithLatitude:position.target.latitude longitude:position.target.longitude];
+  self.defaultCamera.hidden = ([barreForestCenter distanceFromLocation:campos] < 2000);
+  //NSLog(@"camera distance from barreForestCenter: %f", [barreForestCenter distanceFromLocation:campos]);
+}
+
 - (void)locationManager:(CLLocationManager*)manager
      didUpdateLocations:(NSArray*)locations
 {
   CLLocation* location = [locations lastObject];
   NSDate *locDate = location.timestamp;
   NSTimeInterval age = [locDate timeIntervalSinceNow];
+  //NSLog(@"didUpdateLocations: age=%f", age);
   if (abs(age) < 15.0) {
-    GMSCameraUpdate *locUpdate = [GMSCameraUpdate setTarget:location.coordinate zoom:17];
+    GMSCameraUpdate *locUpdate;
+    if (GPStrackingJustEnabled) {
+      locUpdate = [GMSCameraUpdate setTarget:location.coordinate zoom:17];
+      GPStrackingJustEnabled = NO;
+    } else
+      locUpdate = [GMSCameraUpdate setTarget:location.coordinate];
     [mapView_ animateWithCameraUpdate:locUpdate];
+    [self startStopLocationUpdates];
   }
-  [self startStopLocationUpdates];
-  //NSLog(@"Got a new location update");
 }
 
 - (void)locationManager:(CLLocationManager*)manager
@@ -385,8 +416,24 @@ double markerInfoHeightPad = 10.0f;
 
 - (BOOL)didTapMyLocationButtonForMapView:(GMSMapView*)mapView {
   NSLog(@"didTapMyLocationButtonForMapView");
-  [locationManager_ startUpdatingLocation];
+  [self didTapMyLocation];
   return YES;
+}
+
+- (IBAction)didTapMyLocation {
+  NSLog(@"didTapMyLocation");
+  [locationManager_ startUpdatingLocation];
+  GPStrackingEnabled = YES;
+  GPStrackingJustEnabled = !self.configModel.mapTracksGPS;
+}
+
+- (IBAction)didTapDefaultCamera {
+  NSLog(@"didTapDefaultCamera");
+  GMSCameraUpdate *locUpdate = [GMSCameraUpdate setTarget:CLLocationCoordinate2DMake(44.15, -72.475) zoom:13.7];
+  [mapView_ animateWithCameraUpdate:locUpdate];
+  [locationManager_ stopUpdatingLocation];
+  GPStrackingEnabled = NO;
+  self.myLocation.hidden = NO;
 }
 
 - (void)didReceiveMemoryWarning {
