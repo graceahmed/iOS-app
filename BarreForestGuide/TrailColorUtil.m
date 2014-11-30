@@ -23,6 +23,7 @@
   int          *trailTypeIdIsOther;
   NSDictionary *trailTypeIdToSpanIds;
   NSDictionary *trailSpanIdToTypeIds;
+  NSDictionary *trailTypeRename;
   int           trailTypeOtherId;
 
   int          *poiTypeIdSortOrder;
@@ -66,6 +67,8 @@
     NSDictionary *t_spans = @{ @"SkiShoe":      @[ @"Ski", @"Shoe" ],
                                @"MotorSkiShoe": @[ @"Motor", @"Ski", @"Shoe" ],
                                @"Other":        @[ @"Not", @"Skip" ] };
+    trailTypeRename = @{ @"BikePath": @"Bike Path",
+                         @"PvtRd": @"Private Road" };
     NSArray *t_poi = @[ @"Overlook", @"Historical Sign", @"Parking Lot", @"Store" ];
 
     for(int i=0; i<=maxTrailTypeId; i++) {
@@ -318,6 +321,12 @@
     BOOL enabled = [[self.configModel.trailTypeEnabled objectForKey:ttidnum] boolValue];
     [self setTrailTypeIdEnable:trailTypeId enable:!enabled];
   }
+}
+
+- (NSString*)getTrailTypeRename:(NSString*)trailTypeName {
+  NSString *rv = trailTypeRename[trailTypeName];
+  if (rv==nil) rv=trailTypeName;
+  return(rv);
 }
 
 - (int)getPoiTypeSortOrder:(int)poiTypeId {

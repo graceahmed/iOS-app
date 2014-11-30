@@ -59,7 +59,10 @@
             (![self.trailColorUtil isTrailTypeIdOther:trail_type_id]))
         {
           NSNumber *trail_type_id_num = [NSNumber numberWithInt:trail_type_id];
-          NSString *trail_type_name_str = [NSString stringWithUTF8String:trail_type_name];
+          NSString *trail_type_name_str =
+            [self.trailColorUtil
+              getTrailTypeRename:[NSString
+                                    stringWithUTF8String:trail_type_name]];
           [trailTypeIdToName setObject:trail_type_name_str forKey:trail_type_id_num];
           [trailTypeIdsMut addObject:trail_type_id_num];
         }
