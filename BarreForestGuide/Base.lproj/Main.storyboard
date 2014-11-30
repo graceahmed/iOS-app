@@ -77,7 +77,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="j3U-6N-Dic"/>
                     <connections>
-                        <outlet property="defaultCamera" destination="Amz-al-JVW" id="gnF-Ws-Lrg"/>
+                        <outlet property="defaultCameraButton" destination="Amz-al-JVW" id="gnF-Ws-Lrg"/>
                         <outlet property="mapView" destination="JaY-bl-l3E" id="sfN-G9-1s8"/>
                         <outlet property="myLocation" destination="ycT-XD-pUz" id="S0e-XC-J3M"/>
                     </connections>

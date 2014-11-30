@@ -19,7 +19,7 @@
 
 @property (nonatomic, weak) IBOutlet UIView               *mapView;
 @property (nonatomic, weak) IBOutlet UIButton             *myLocation;
-@property (nonatomic, weak) IBOutlet UIButton             *defaultCamera;
+@property (nonatomic, weak) IBOutlet UIButton             *defaultCameraButton;
 @property                            WebKitViewController *webViewController;
 @property                            ConfigModel          *configModel;
 @property                            TrailColorUtil       *trailColorUtil;

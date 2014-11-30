@@ -21,6 +21,7 @@
   BOOL               GPStrackingEnabled;
   BOOL               GPStrackingJustEnabled;
   CLLocation        *barreForestCenter;
+  GMSCameraPosition *defaultCamera;
 }
 
 @synthesize mapView;
@@ -38,12 +39,18 @@
 
   [self initializeLocationManager];
 
-  GMSCameraPosition *camera = [ GMSCameraPosition cameraWithLatitude:44.15 longitude:-72.475 zoom:13.7];
-  mapView_ =  [GMSMapView mapWithFrame:mapView.bounds camera:camera];
+  mapView_ =  [GMSMapView mapWithFrame:mapView.bounds camera:nil];
+  CLLocationCoordinate2D defaultCameraNE = CLLocationCoordinate2DMake(44.168,-72.455);
+  CLLocationCoordinate2D defaultCameraSW = CLLocationCoordinate2DMake(44.133,-72.494);
+  GMSCoordinateBounds *defaultCameraBounds = [[GMSCoordinateBounds alloc] initWithCoordinate:defaultCameraNE coordinate:defaultCameraSW];
+  defaultCamera = [ mapView_ cameraForBounds:defaultCameraBounds insets:UIEdgeInsetsZero];
+  mapView_.camera = defaultCamera;
   mapView_.settings.compassButton = YES;
   //mapView_.settings.myLocationButton = YES;
   mapView_.mapType = self.configModel.mapType;
   mapView_.padding = UIEdgeInsetsMake(20, 5, 5, 5);
+
+  self.defaultCameraButton.hidden = YES;
 
   [mapView addSubview:mapView_];
   mapView_.delegate = self;
@@ -366,7 +373,7 @@ double markerInfoHeightPad = 10.0f;
 }
 
 - (void)mapView:(GMSMapView*)_mapView willMove:(BOOL)gesture {
-  NSLog(@"willMove: gesture=%d", gesture);
+  //NSLog(@"willMove: gesture=%d", gesture);
   if (gesture) {
     [locationManager_ stopUpdatingLocation];
     GPStrackingEnabled = NO;
@@ -385,7 +392,7 @@ double markerInfoHeightPad = 10.0f;
     }
   }
   CLLocation *campos = [[CLLocation alloc] initWithLatitude:position.target.latitude longitude:position.target.longitude];
-  self.defaultCamera.hidden = ([barreForestCenter distanceFromLocation:campos] < 2000);
+  self.defaultCameraButton.hidden = ([barreForestCenter distanceFromLocation:campos] < 2000);
   //NSLog(@"camera distance from barreForestCenter: %f", [barreForestCenter distanceFromLocation:campos]);
 }
 
@@ -429,8 +436,7 @@ double markerInfoHeightPad = 10.0f;
 
 - (IBAction)didTapDefaultCamera {
   NSLog(@"didTapDefaultCamera");
-  GMSCameraUpdate *locUpdate = [GMSCameraUpdate setTarget:CLLocationCoordinate2DMake(44.15, -72.475) zoom:13.7];
-  [mapView_ animateWithCameraUpdate:locUpdate];
+  [mapView_ animateToCameraPosition:defaultCamera];
   [locationManager_ stopUpdatingLocation];
   GPStrackingEnabled = NO;
   self.myLocation.hidden = NO;
