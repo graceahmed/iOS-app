@@ -20,6 +20,7 @@
     self.sharingEnabled = NO;
     self.trailTypeEnabled = [[NSMutableDictionary alloc] init];
     self.poiTypeEnabled = [[NSMutableDictionary alloc] init];
+    self.discGolfEnabled = NO;
   }
   return(self);
 }
@@ -38,6 +39,7 @@
   self.sharingEnabled = [decoder decodeBoolForKey:@"sharingEnabled"];
   self.trailTypeEnabled = [decoder decodeObjectForKey:@"trailTypeEnabled"];
   self.poiTypeEnabled = [decoder decodeObjectForKey:@"poiTypeEnabled"];
+  self.discGolfEnabled = [decoder decodeObjectForKey:@"discGolfEnabled"];
   return(self);
 }
 
@@ -48,7 +50,7 @@
   } else {
     self = [self init];
   }
-  NSLog(@"initFromDefaults: mapTracksGPS=%d, mapType=%d, mapSeason=%d, sharingEnabled=%d, trailTypeEnabled=%@, poiTypeEnabled=%@", self.mapTracksGPS, self.mapType, self.mapSeason, self.sharingEnabled, self.trailTypeEnabled, self.poiTypeEnabled);
+  NSLog(@"initFromDefaults: mapTracksGPS=%d, mapType=%d, mapSeason=%d, sharingEnabled=%d, trailTypeEnabled=%@, poiTypeEnabled=%@, discGolfEnabled=%d", self.mapTracksGPS, self.mapType, self.mapSeason, self.sharingEnabled, self.trailTypeEnabled, self.poiTypeEnabled, self.discGolfEnabled);
   return(self);
 }
 
@@ -59,6 +61,7 @@
   [encoder encodeBool:_sharingEnabled forKey:@"sharingEnabled"];
   [encoder encodeObject:_trailTypeEnabled forKey:@"trailTypeEnabled"];
   [encoder encodeObject:_poiTypeEnabled forKey:@"poiTypeEnabled"];
+  [encoder encodeBool:_discGolfEnabled forKey:@"discGolfEnabled"];
 }
 
 - (void) saveToDefaults {
@@ -73,7 +76,7 @@
   */
 
   [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"config"];
-  NSLog(@"saveToDefaults: mapTracksGPS=%d, mapType=%d, mapSeason=%d, sharingEnabled=%d, trailTypeEnabled=%@, poiTypeEnabled=%@", self.mapTracksGPS, self.mapType, self.mapSeason, self.sharingEnabled, self.trailTypeEnabled, self.poiTypeEnabled);
+  NSLog(@"saveToDefaults: mapTracksGPS=%d, mapType=%d, mapSeason=%d, sharingEnabled=%d, trailTypeEnabled=%@, poiTypeEnabled=%@, discGolfEnabled=%d", self.mapTracksGPS, self.mapType, self.mapSeason, self.sharingEnabled, self.trailTypeEnabled, self.poiTypeEnabled, self.discGolfEnabled);
 }
 
 - (BOOL) isSummerMapSeason {

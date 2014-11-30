@@ -112,7 +112,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
-  return(2);
+  return(3);
 }
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
@@ -120,13 +120,14 @@
   switch(section) {
     case 0: rv = [  poiTypeIds count]; break;
     case 1: rv = [trailTypeIds count]; break;
+    case 2: rv = 1;                    break;
     default:                           break;
   }
   return(rv);
 }
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
-  NSArray *title = @[ @"POI Type Filters", @"Trail Type Filters" ];
+  NSArray *title = @[ @"POI Type Filters", @"Trail Type Filters", @"Disc Golf Filter" ];
   return(title[section]);
 }
 
@@ -148,6 +149,10 @@
     case 1:
       cell.textLabel.text = trailTypeIdToName[trailTypeIds[row]];
       enabled = [self.configModel.trailTypeEnabled[trailTypeIds[row]] boolValue];
+      break;
+    case 2:
+      cell.textLabel.text = @"Disc Golf Holes";
+      enabled = self.configModel.discGolfEnabled;
       break;
     default: break;
   }
@@ -171,6 +176,9 @@
       break;
     case 1:
       [self.trailColorUtil toggleTrailTypeIdEnable:[trailTypeIds[row] intValue]];
+      break;
+    case 2:
+      self.configModel.discGolfEnabled = !self.configModel.discGolfEnabled;
       break;
     default: break;
   }

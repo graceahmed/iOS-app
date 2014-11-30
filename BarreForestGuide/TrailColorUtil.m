@@ -41,6 +41,7 @@
   if (self = [super init]) {
     self.configModel = [ConfigModel getConfigModel];
     self.trailTypeColor = [[NSMutableDictionary alloc] init];
+    self.discGolfPathColor = nil;
 
     if (self.configModel.trailTypeEnabled==nil)
       self.configModel.trailTypeEnabled = [[NSMutableDictionary alloc] init];
@@ -171,6 +172,7 @@
 
 - (void)invalidateColorCache {
   self.trailTypeColor = [[NSMutableDictionary alloc] init];
+  self.discGolfPathColor = nil;
 }
 
 - (UIColor*)getTrailTypeColor:(int)trailTypeId {
@@ -186,6 +188,17 @@
     [self.trailTypeColor setObject:color forKey:ttid];
   }
   return(color);
+}
+
+- (UIColor*)getDiscGolfPathColor {
+  if (self.discGolfPathColor==nil) {
+    if (!self.configModel.discGolfEnabled) {
+      self.discGolfPathColor = [UIColor colorWithWhite:0.75f alpha:0.5f];
+    } else {
+      self.discGolfPathColor = [UIColor redColor];
+    }
+  }
+  return(self.discGolfPathColor);
 }
 
 - (int)getTrailTypeSortOrder:(int)trailTypeId {

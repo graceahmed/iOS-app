@@ -192,6 +192,41 @@
       sqlite3_finalize(POIQueryStmt);
     } else
       NSLog(@"Failed to query database for POI data!");
+
+    NSString *discGolfQuerySQL =
+        [NSString stringWithFormat:@"select map_object_id,hole,latitude,longitude from disc_golf_hole,coordinate " \
+                                    "where coordinate.map_object_id=disc_golf_hole.id order by map_object_id,seq;"];
+    sqlite3_stmt *discGolfQueryStmt = nil;
+    if (sqlite3_prepare_v2(mapDataDB_, [discGolfQuerySQL UTF8String], -1, &discGolfQueryStmt, NULL) == SQLITE_OK) {
+      UIColor *hole_polyline_color = [self.trailColorUtil getDiscGolfPathColor];
+      GMSMutablePath *hole_path = nil;
+      int prev_hole_id = -1;
+      while(sqlite3_step(discGolfQueryStmt) == SQLITE_ROW) {
+        int hole_id = sqlite3_column_int(discGolfQueryStmt, 0);
+        int hole_num = sqlite3_column_int(discGolfQueryStmt, 1);
+        double latitude = sqlite3_column_double(discGolfQueryStmt, 2);
+        double longitude = sqlite3_column_double(discGolfQueryStmt, 3);
+        //NSLog(@"hole_id %d (hole %d) (%f, %f)", hole_id, hole_num, latitude, longitude);
+        if (prev_hole_id != hole_id) {
+          if (hole_path && ([hole_path count]>1)) {
+            GMSPolyline *hole_poly = [GMSPolyline polylineWithPath:hole_path];
+            hole_poly.strokeColor = hole_polyline_color;
+            hole_poly.map = mapView_;
+          }
+          hole_path = [GMSMutablePath path];
+          prev_hole_id = hole_id;
+        }
+        [hole_path addCoordinate:CLLocationCoordinate2DMake(latitude, longitude)];
+      }
+      if (hole_path && ([hole_path count]>1)) {
+        GMSPolyline *hole_poly = [GMSPolyline polylineWithPath:hole_path];
+        hole_poly.strokeColor = hole_polyline_color;
+        hole_poly.map = mapView_;
+      }
+      sqlite3_finalize(discGolfQueryStmt);
+    } else
+      NSLog(@"Failed to prepare database query for disc golf holes!");
+
   } else
     NSLog(@"Failed to open database!");
 }
