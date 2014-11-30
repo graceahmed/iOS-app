@@ -18,6 +18,8 @@ typedef enum { summer_map_season, winter_map_season, auto_map_season } map_seaso
 @property map_season_t          mapSeason;
 @property BOOL                  sharingEnabled;
 @property NSMutableDictionary  *trailTypeEnabled;
+@property NSMutableDictionary  *poiTypeEnabled;
+@property BOOL                  discGolfEnabled;
 
 + (ConfigModel*)getConfigModel;
 - (id) initFromDefaults;

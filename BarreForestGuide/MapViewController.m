@@ -18,6 +18,10 @@
   sqlite3           *mapDataDB_;
   NSMutableArray    *mapPolylines_;
   UIView            *markerInfoContentView_;
+  BOOL               GPStrackingEnabled;
+  BOOL               GPStrackingJustEnabled;
+  CLLocation        *barreForestCenter;
+  GMSCameraPosition *defaultCamera;
 }
 
 @synthesize mapView;
@@ -35,12 +39,18 @@
 
   [self initializeLocationManager];
 
-  GMSCameraPosition *camera = [ GMSCameraPosition cameraWithLatitude:44.1525 longitude:-72.475 zoom:14];
-  mapView_ =  [GMSMapView mapWithFrame:mapView.bounds camera:camera];
+  mapView_ =  [GMSMapView mapWithFrame:mapView.bounds camera:nil];
+  CLLocationCoordinate2D defaultCameraNE = CLLocationCoordinate2DMake(44.168,-72.455);
+  CLLocationCoordinate2D defaultCameraSW = CLLocationCoordinate2DMake(44.133,-72.494);
+  GMSCoordinateBounds *defaultCameraBounds = [[GMSCoordinateBounds alloc] initWithCoordinate:defaultCameraNE coordinate:defaultCameraSW];
+  defaultCamera = [ mapView_ cameraForBounds:defaultCameraBounds insets:UIEdgeInsetsZero];
+  mapView_.camera = defaultCamera;
   mapView_.settings.compassButton = YES;
-  mapView_.settings.myLocationButton = YES;
+  //mapView_.settings.myLocationButton = YES;
   mapView_.mapType = self.configModel.mapType;
   mapView_.padding = UIEdgeInsetsMake(20, 5, 5, 5);
+
+  self.defaultCameraButton.hidden = YES;
 
   [mapView addSubview:mapView_];
   mapView_.delegate = self;
@@ -62,25 +72,6 @@
   [super viewWillDisappear:animated];
 }
 
-- (void)initializeLocationManager {
-  if ([CLLocationManager locationServicesEnabled]) {
-    if (locationManager_ == nil)
-      locationManager_ = [[CLLocationManager alloc] init];
-    locationManager_.desiredAccuracy = kCLLocationAccuracyBest;
-    locationManager_.distanceFilter = 1;
-    locationManager_.delegate = self;
-    if ([locationManager_ respondsToSelector:@selector(requestWhenInUseAuthorization)])
-      [locationManager_ requestWhenInUseAuthorization];
-  }
-}
-
-- (void)startStopLocationUpdates {
-  if ((self.configModel.mapTracksGPS))
-    [locationManager_ startUpdatingLocation];
-  else
-    [locationManager_ stopUpdatingLocation];
-}
-
 - (void)drawMapObjects {
   [mapView_ clear];
   if (markerInfoContentView_) {
@@ -96,8 +87,8 @@
     char *season = [self.configModel isSummerMapSeason] ? "summer" : "winter";
 
     NSString *trailQuerySQL =
-        [NSString stringWithFormat:@"select map_object_id,lattitude,longitude from trail,coordinate " \
-                                    "where coordinate.map_object_id=trail.id and summer_uses_id=? order by map_object_id,seq;"];
+        [NSString stringWithFormat:@"select map_object_id,latitude,longitude from trail,coordinate " \
+                                    "where coordinate.map_object_id=trail.id and %s_uses_id=? order by map_object_id,seq;", season];
     NSString *trailTypeQuerySQL =
         [NSString stringWithFormat:@"select distinct %s_uses_id from trail;", season];
     sqlite3_stmt *trailQueryStmt = nil;
@@ -116,9 +107,9 @@
           int prev_trail_id = -1;
           while(sqlite3_step(trailQueryStmt) == SQLITE_ROW) {
             int trail_id = sqlite3_column_int(trailQueryStmt, 0);
-            double lattitude = sqlite3_column_double(trailQueryStmt, 1);
+            double latitude = sqlite3_column_double(trailQueryStmt, 1);
             double longitude = sqlite3_column_double(trailQueryStmt, 2);
-            //NSLog(@"trail_id %d (%f, %f)", trail_id, lattitude, longitude);
+            //NSLog(@"trail_id %d (%f, %f)", trail_id, latitude, longitude);
             if (prev_trail_id != trail_id) {
               if (trailpath && ([trailpath count]>1)) {
                 GMSPolyline *trailpoly = [GMSPolyline polylineWithPath:trailpath];
@@ -129,7 +120,7 @@
               trailpath = [GMSMutablePath path];
               prev_trail_id = trail_id;
             }
-            [trailpath addCoordinate:CLLocationCoordinate2DMake(lattitude, longitude)];
+            [trailpath addCoordinate:CLLocationCoordinate2DMake(latitude, longitude)];
           }
           if (trailpath && ([trailpath count]>1)) {
             GMSPolyline *trailpoly = [GMSPolyline polylineWithPath:trailpath];
@@ -146,6 +137,7 @@
 
     NSMutableDictionary *POI_Icons = [[NSMutableDictionary alloc] init];
 
+    NSString *enabledPOITypeIds = nil;
     NSString *POITypeQuerySQL =
         [NSString stringWithFormat:@"select id,english_poi_type from poi_type;"];
     sqlite3_stmt *POITypeQueryStmt = nil;
@@ -154,10 +146,17 @@
         int type = sqlite3_column_int(POITypeQueryStmt, 0);
         char *name = (char*)sqlite3_column_text(POITypeQueryStmt, 1);
         NSString *iconName = [NSString stringWithFormat:@"%s.png", name];
+        NSNumber *type_num = [NSNumber numberWithInt:type];
         iconName = [iconName stringByReplacingOccurrencesOfString:@" " withString:@""];
         //NSLog(@"Icon name: %@, id: %d", iconName, type);
         UIImage *icon = [UIImage imageNamed:iconName];
-        [POI_Icons setObject:icon forKey:[NSNumber numberWithInt:type]];
+        if (icon) [POI_Icons setObject:icon forKey:type_num];
+        if ([[self.configModel.poiTypeEnabled objectForKey:type_num] boolValue]) {
+          if (!enabledPOITypeIds)
+            enabledPOITypeIds = [NSString stringWithFormat:@"%d", type];
+          else
+            enabledPOITypeIds = [enabledPOITypeIds stringByAppendingFormat:@",%d", type];
+        }
       }
       sqlite3_finalize(POITypeQueryStmt);
     } else {
@@ -165,18 +164,18 @@
     }
 
     NSString *POIQuerySQL =
-        [NSString stringWithFormat:@"select name,type_id,lattitude,longitude,url from map_object,point_of_interest,coordinate where map_object.id=point_of_interest.id and coordinate.map_object_id=map_object.id;"];
+        [NSString stringWithFormat:@"select name,type_id,latitude,longitude,url from map_object,point_of_interest,coordinate where map_object.id=point_of_interest.id and coordinate.map_object_id=map_object.id and type_id in (%@);", enabledPOITypeIds];
     sqlite3_stmt *POIQueryStmt = nil;
     if (sqlite3_prepare_v2(mapDataDB_, [POIQuerySQL UTF8String], -1, &POIQueryStmt, NULL) == SQLITE_OK) {
       while(sqlite3_step(POIQueryStmt) == SQLITE_ROW) {
         char *name = (char*)sqlite3_column_text(POIQueryStmt, 0);
         int type = sqlite3_column_int(POIQueryStmt, 1);
-        double lattitude = sqlite3_column_double(POIQueryStmt, 2);
+        double latitude = sqlite3_column_double(POIQueryStmt, 2);
         double longitude = sqlite3_column_double(POIQueryStmt, 3);
         char *url = (char*)sqlite3_column_text(POIQueryStmt, 4);
-        //NSLog(@"POI: %s [%d] (%f, %f) - %s", name, type, lattitude, longitude, url);
+        //NSLog(@"POI: %s [%d] (%f, %f) - %s", name, type, latitude, longitude, url);
 
-        CLLocationCoordinate2D pos = CLLocationCoordinate2DMake(lattitude, longitude);
+        CLLocationCoordinate2D pos = CLLocationCoordinate2DMake(latitude, longitude);
         GMSMarker *marker = [GMSMarker markerWithPosition:pos];
         if (name) marker.title = [NSString stringWithUTF8String:name];
         if (url) marker.snippet = [NSString stringWithUTF8String:url];
@@ -193,6 +192,66 @@
       sqlite3_finalize(POIQueryStmt);
     } else
       NSLog(@"Failed to query database for POI data!");
+
+    NSString *discGolfQuerySQL =
+        [NSString stringWithFormat:@"select map_object_id,hole,latitude,longitude from disc_golf_hole,coordinate " \
+                                    "where coordinate.map_object_id=disc_golf_hole.id order by map_object_id,seq;"];
+    sqlite3_stmt *discGolfQueryStmt = nil;
+    if (sqlite3_prepare_v2(mapDataDB_, [discGolfQuerySQL UTF8String], -1, &discGolfQueryStmt, NULL) == SQLITE_OK) {
+      UIImage *tee_icon;
+      UIImage *basket_icon;
+      if (self.configModel.discGolfEnabled) {
+        tee_icon = [UIImage imageNamed:@"DiscGolfTee.png"];
+        basket_icon = [UIImage imageNamed:@"DiscGolfBasket.png"];
+      }
+      UIColor *hole_polyline_color = [self.trailColorUtil getDiscGolfPathColor];
+      GMSMutablePath *hole_path = nil;
+      int prev_hole_id = -1;
+      int prev_hole_num = -1;
+      while(sqlite3_step(discGolfQueryStmt) == SQLITE_ROW) {
+        int hole_id = sqlite3_column_int(discGolfQueryStmt, 0);
+        int hole_num = sqlite3_column_int(discGolfQueryStmt, 1);
+        double latitude = sqlite3_column_double(discGolfQueryStmt, 2);
+        double longitude = sqlite3_column_double(discGolfQueryStmt, 3);
+        //NSLog(@"hole_id %d (hole %d) (%f, %f)", hole_id, hole_num, latitude, longitude);
+        CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(latitude, longitude);
+        if (prev_hole_id != hole_id) {
+          if (hole_path && ([hole_path count]>1)) {
+            GMSPolyline *hole_poly = [GMSPolyline polylineWithPath:hole_path];
+            hole_poly.strokeColor = hole_polyline_color;
+            hole_poly.strokeWidth = 2.0f;
+            hole_poly.map = mapView_;
+
+            if (self.configModel.discGolfEnabled) {
+              CLLocationCoordinate2D basketCoord = [hole_path coordinateAtIndex:([hole_path count]-1)];
+              GMSMarker *basketMarker = [GMSMarker markerWithPosition:basketCoord];
+              basketMarker.title = [NSString stringWithFormat:@"Disc Golf Hole %d Basket", prev_hole_num];
+              basketMarker.icon = basket_icon;
+              basketMarker.map = mapView_;
+            }
+          }
+          hole_path = [GMSMutablePath path];
+          prev_hole_id = hole_id;
+          prev_hole_num = hole_num;
+
+          if (self.configModel.discGolfEnabled) {
+            GMSMarker *basketTee = [GMSMarker markerWithPosition:coord];
+            basketTee.title = [NSString stringWithFormat:@"Disc Golf Hole %d Tee", hole_num];
+            basketTee.icon = tee_icon;
+            basketTee.map = mapView_;
+          }
+        }
+        [hole_path addCoordinate:coord];
+      }
+      if (hole_path && ([hole_path count]>1)) {
+        GMSPolyline *hole_poly = [GMSPolyline polylineWithPath:hole_path];
+        hole_poly.strokeColor = hole_polyline_color;
+        hole_poly.map = mapView_;
+      }
+      sqlite3_finalize(discGolfQueryStmt);
+    } else
+      NSLog(@"Failed to prepare database query for disc golf holes!");
+
   } else
     NSLog(@"Failed to open database!");
 }
@@ -303,18 +362,6 @@ double markerInfoHeightPad = 10.0f;
   return(win);
 }
 
-- (void)mapView:(GMSMapView*)_mapView didChangeCameraPosition:(GMSCameraPosition*)position {
-  //NSLog(@"didChangeCameraPosition: %@", position);
-  if (markerInfoContentView_) {
-    if (_mapView.selectedMarker != nil)
-      [self moveInfoWindowContentsToMarker:_mapView.selectedMarker];
-    else {
-      [markerInfoContentView_ removeFromSuperview];
-      markerInfoContentView_ = nil;
-    }
-  }
-}
-
 - (void)mapView:(GMSMapView*)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
   //NSLog(@"didTapAtCoordinate: (%f, %f)", coordinate.latitude, coordinate.longitude);
   if (markerInfoContentView_) {
@@ -355,18 +402,77 @@ double markerInfoHeightPad = 10.0f;
   NSLog(@"launchShare");
 }
 
+- (void)initializeLocationManager {
+  GPStrackingEnabled = NO;
+  if ([CLLocationManager locationServicesEnabled]) {
+    if (locationManager_ == nil)
+      locationManager_ = [[CLLocationManager alloc] init];
+    locationManager_.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager_.distanceFilter = 1;
+    locationManager_.delegate = self;
+    if ([locationManager_ respondsToSelector:@selector(requestWhenInUseAuthorization)])
+      [locationManager_ requestWhenInUseAuthorization];
+    barreForestCenter = [[CLLocation alloc] initWithLatitude:44.15 longitude:-72.48];
+  }
+}
+
+- (void)startStopLocationUpdates {
+  if (locationManager_==nil) return;
+  if ((self.configModel.mapTracksGPS)) {
+    if (!GPStrackingEnabled) {
+      [locationManager_ startUpdatingLocation];
+      GPStrackingEnabled = YES;
+      GPStrackingJustEnabled = YES;
+    }
+  } else {
+    if (GPStrackingEnabled) {
+      [locationManager_ stopUpdatingLocation];
+      GPStrackingEnabled = NO;
+    }
+  }
+}
+
+- (void)mapView:(GMSMapView*)_mapView willMove:(BOOL)gesture {
+  //NSLog(@"willMove: gesture=%d", gesture);
+  if (gesture) {
+    [locationManager_ stopUpdatingLocation];
+    GPStrackingEnabled = NO;
+  }
+  self.myLocation.hidden = GPStrackingEnabled;
+}
+
+- (void)mapView:(GMSMapView*)_mapView didChangeCameraPosition:(GMSCameraPosition*)position {
+  //NSLog(@"didChangeCameraPosition: %@", position);
+  if (markerInfoContentView_) {
+    if (_mapView.selectedMarker != nil)
+      [self moveInfoWindowContentsToMarker:_mapView.selectedMarker];
+    else {
+      [markerInfoContentView_ removeFromSuperview];
+      markerInfoContentView_ = nil;
+    }
+  }
+  CLLocation *campos = [[CLLocation alloc] initWithLatitude:position.target.latitude longitude:position.target.longitude];
+  self.defaultCameraButton.hidden = ([barreForestCenter distanceFromLocation:campos] < 2000);
+  //NSLog(@"camera distance from barreForestCenter: %f", [barreForestCenter distanceFromLocation:campos]);
+}
+
 - (void)locationManager:(CLLocationManager*)manager
      didUpdateLocations:(NSArray*)locations
 {
   CLLocation* location = [locations lastObject];
   NSDate *locDate = location.timestamp;
   NSTimeInterval age = [locDate timeIntervalSinceNow];
+  //NSLog(@"didUpdateLocations: age=%f", age);
   if (abs(age) < 15.0) {
-    GMSCameraUpdate *locUpdate = [GMSCameraUpdate setTarget:location.coordinate zoom:17];
+    GMSCameraUpdate *locUpdate;
+    if (GPStrackingJustEnabled) {
+      locUpdate = [GMSCameraUpdate setTarget:location.coordinate zoom:17];
+      GPStrackingJustEnabled = NO;
+    } else
+      locUpdate = [GMSCameraUpdate setTarget:location.coordinate];
     [mapView_ animateWithCameraUpdate:locUpdate];
+    [self startStopLocationUpdates];
   }
-  [self startStopLocationUpdates];
-  //NSLog(@"Got a new location update");
 }
 
 - (void)locationManager:(CLLocationManager*)manager
@@ -377,8 +483,23 @@ double markerInfoHeightPad = 10.0f;
 
 - (BOOL)didTapMyLocationButtonForMapView:(GMSMapView*)mapView {
   NSLog(@"didTapMyLocationButtonForMapView");
-  [locationManager_ startUpdatingLocation];
+  [self didTapMyLocation];
   return YES;
+}
+
+- (IBAction)didTapMyLocation {
+  NSLog(@"didTapMyLocation");
+  [locationManager_ startUpdatingLocation];
+  GPStrackingEnabled = YES;
+  GPStrackingJustEnabled = !self.configModel.mapTracksGPS;
+}
+
+- (IBAction)didTapDefaultCamera {
+  NSLog(@"didTapDefaultCamera");
+  [mapView_ animateToCameraPosition:defaultCamera];
+  [locationManager_ stopUpdatingLocation];
+  GPStrackingEnabled = NO;
+  self.myLocation.hidden = NO;
 }
 
 - (void)didReceiveMemoryWarning {
