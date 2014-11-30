@@ -99,6 +99,7 @@
           int trail_type_id = sqlite3_column_int(trailTypeQueryStmt, 0);
           //NSLog(@"trail_type_id %d", trail_type_id);
           UIColor *trail_type_color = [self.trailColorUtil getTrailTypeColor:trail_type_id];
+          CGFloat  trail_type_width = [self.trailColorUtil getTrailTypeWidth:trail_type_id];
           //if (trail_type_color) NSLog(@"got color %@ for trail_type_id %d", trail_type_color, trail_type_id); // FIXME - remove
           //if (trail_type_color==nil) trail_type_color = [UIColor redColor];
           sqlite3_reset(trailQueryStmt);
@@ -114,6 +115,7 @@
               if (trailpath && ([trailpath count]>1)) {
                 GMSPolyline *trailpoly = [GMSPolyline polylineWithPath:trailpath];
                 trailpoly.strokeColor = trail_type_color;
+                trailpoly.strokeWidth = trail_type_width;
                 trailpoly.map = mapView_;
                 //NSLog(@"Putting Polyline on the map");
               }
@@ -205,6 +207,7 @@
         basket_icon = [UIImage imageNamed:@"DiscGolfBasket.png"];
       }
       UIColor *hole_polyline_color = [self.trailColorUtil getDiscGolfPathColor];
+      CGFloat  hole_polyline_width = [self.trailColorUtil getDiscGolfPathWidth];
       GMSMutablePath *hole_path = nil;
       int prev_hole_id = -1;
       int prev_hole_num = -1;
@@ -219,7 +222,7 @@
           if (hole_path && ([hole_path count]>1)) {
             GMSPolyline *hole_poly = [GMSPolyline polylineWithPath:hole_path];
             hole_poly.strokeColor = hole_polyline_color;
-            hole_poly.strokeWidth = 2.0f;
+            hole_poly.strokeWidth = hole_polyline_width;
             hole_poly.map = mapView_;
 
             if (self.configModel.discGolfEnabled) {

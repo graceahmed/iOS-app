@@ -13,13 +13,17 @@
 
 @property ConfigModel          *configModel;
 @property NSMutableDictionary  *trailTypeColor;
+@property NSMutableDictionary  *trailTypeWidth;
 @property UIColor              *discGolfPathColor;
+@property NSNumber             *discGolfPathWidth;
 
 + (TrailColorUtil*)getTrailColorUtil;
 - (void)invalidateColorCache;
 
 - (UIColor*)getTrailTypeColor:(int)trailTypeID;
+- (CGFloat )getTrailTypeWidth:(int)trailTypeID;
 - (UIColor*)getDiscGolfPathColor;
+- (CGFloat )getDiscGolfPathWidth;
 
 - (int)getTrailTypeSortOrder:(int)trailTypeId;
 - (int)getTrailTypeOtherId;

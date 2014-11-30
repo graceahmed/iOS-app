@@ -46,6 +46,7 @@
   if (self = [super init]) {
     self.configModel = [ConfigModel getConfigModel];
     self.trailTypeColor = [[NSMutableDictionary alloc] init];
+    self.trailTypeWidth = [[NSMutableDictionary alloc] init];
     self.discGolfPathColor = nil;
 
     maxTrailTypeId = -1;
@@ -226,7 +227,9 @@
 
 - (void)invalidateColorCache {
   self.trailTypeColor = [[NSMutableDictionary alloc] init];
+  self.trailTypeWidth = [[NSMutableDictionary alloc] init];
   self.discGolfPathColor = nil;
+  self.discGolfPathWidth = nil;
 }
 
 - (UIColor*)getTrailTypeColor:(int)trailTypeId {
@@ -253,6 +256,29 @@
   return(color);
 }
 
+- (CGFloat )getTrailTypeWidth:(int)trailTypeId {
+  NSNumber *ttid = [NSNumber numberWithInt:trailTypeId];
+  NSNumber *width = [self.trailTypeWidth objectForKey:ttid];
+  if (width==nil) {
+    BOOL enabled = [[self.configModel.trailTypeEnabled objectForKey:ttid] boolValue];
+    if (!enabled) {
+      width = @1.0f;
+    } else {
+      int difficulty = trailTypeIdToDifficultyGroup[trailTypeId];
+      if (difficulty==-1) difficulty=numTrailDifficultyGroups-1;
+      if ((self.configModel.mapType==kGMSTypeNormal) ||
+          (self.configModel.mapType==kGMSTypeTerrain))
+      {
+        width = @1.0f;
+      } else {
+        width = @2.0f;
+      }
+    }
+    [self.trailTypeWidth setObject:width forKey:ttid];
+  }
+  return([width floatValue]);
+}
+
 - (UIColor*)getDiscGolfPathColor {
   if (self.discGolfPathColor==nil) {
     if (!self.configModel.discGolfEnabled) {
@@ -268,6 +294,23 @@
     }
   }
   return(self.discGolfPathColor);
+}
+
+- (CGFloat )getDiscGolfPathWidth {
+  if (self.discGolfPathWidth==nil) {
+    if (!self.configModel.discGolfEnabled) {
+      self.discGolfPathWidth = @1.0f;
+    } else {
+      if ((self.configModel.mapType==kGMSTypeNormal) ||
+          (self.configModel.mapType==kGMSTypeTerrain))
+      {
+        self.discGolfPathWidth = @2.0f;
+      } else {
+        self.discGolfPathWidth = @2.0f;
+      }
+    }
+  }
+  return([self.discGolfPathWidth floatValue]);
 }
 
 - (int)getTrailTypeSortOrder:(int)trailTypeId {
