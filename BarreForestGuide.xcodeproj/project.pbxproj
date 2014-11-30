@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E20F9801A2B3B43008DB66C /* DiscGolfBasket.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E20F97E1A2B3B43008DB66C /* DiscGolfBasket.png */; };
+		6E20F9811A2B3B43008DB66C /* DiscGolfTee.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E20F97F1A2B3B43008DB66C /* DiscGolfTee.png */; };
 		6E27B0DA1A25B673000916FF /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E27B0D91A25B673000916FF /* FilterViewController.m */; };
 		6E310FFD1A236F05008F5345 /* TrailColorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E310FFC1A236F05008F5345 /* TrailColorUtil.m */; };
 		6E322DE31A1B127300FE4B45 /* ConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E322DE21A1B127300FE4B45 /* ConfigModel.m */; };
@@ -53,6 +55,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6E20F97E1A2B3B43008DB66C /* DiscGolfBasket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DiscGolfBasket.png; sourceTree = "<group>"; };
+		6E20F97F1A2B3B43008DB66C /* DiscGolfTee.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DiscGolfTee.png; sourceTree = "<group>"; };
 		6E27B0D81A25B673000916FF /* FilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterViewController.h; sourceTree = "<group>"; };
 		6E27B0D91A25B673000916FF /* FilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterViewController.m; sourceTree = "<group>"; };
 		6E310FFB1A236F05008F5345 /* TrailColorUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrailColorUtil.h; sourceTree = "<group>"; };
@@ -134,6 +138,8 @@
 		6E322DCD1A1AFE0600FE4B45 /* POI_Icons */ = {
 			isa = PBXGroup;
 			children = (
+				6E20F97E1A2B3B43008DB66C /* DiscGolfBasket.png */,
+				6E20F97F1A2B3B43008DB66C /* DiscGolfTee.png */,
 				A015441E1A1E99F800C26FB1 /* ParkingLot.png */,
 				A01544221A1E9AEE00C26FB1 /* Store.png */,
 				A015441C1A1E99DD00C26FB1 /* Overlook.png */,
@@ -344,7 +350,9 @@
 				6E661E0719F4C68D00481D4D /* Images.xcassets in Resources */,
 				A01544231A1E9AEE00C26FB1 /* Store.png in Resources */,
 				A015441D1A1E99DD00C26FB1 /* Overlook.png in Resources */,
+				6E20F9811A2B3B43008DB66C /* DiscGolfTee.png in Resources */,
 				6E78103919F77AFC00F2AE80 /* GoogleMaps.bundle in Resources */,
+				6E20F9801A2B3B43008DB66C /* DiscGolfBasket.png in Resources */,
 				A01544291A1E9B6500C26FB1 /* button_menu_40.png in Resources */,
 				A015442A1A1E9B6500C26FB1 /* filter_button_40.png in Resources */,
 			);

@@ -198,25 +198,49 @@
                                     "where coordinate.map_object_id=disc_golf_hole.id order by map_object_id,seq;"];
     sqlite3_stmt *discGolfQueryStmt = nil;
     if (sqlite3_prepare_v2(mapDataDB_, [discGolfQuerySQL UTF8String], -1, &discGolfQueryStmt, NULL) == SQLITE_OK) {
+      UIImage *tee_icon;
+      UIImage *basket_icon;
+      if (self.configModel.discGolfEnabled) {
+        tee_icon = [UIImage imageNamed:@"DiscGolfTee.png"];
+        basket_icon = [UIImage imageNamed:@"DiscGolfBasket.png"];
+      }
       UIColor *hole_polyline_color = [self.trailColorUtil getDiscGolfPathColor];
       GMSMutablePath *hole_path = nil;
       int prev_hole_id = -1;
+      int prev_hole_num = -1;
       while(sqlite3_step(discGolfQueryStmt) == SQLITE_ROW) {
         int hole_id = sqlite3_column_int(discGolfQueryStmt, 0);
         int hole_num = sqlite3_column_int(discGolfQueryStmt, 1);
         double latitude = sqlite3_column_double(discGolfQueryStmt, 2);
         double longitude = sqlite3_column_double(discGolfQueryStmt, 3);
         //NSLog(@"hole_id %d (hole %d) (%f, %f)", hole_id, hole_num, latitude, longitude);
+        CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(latitude, longitude);
         if (prev_hole_id != hole_id) {
           if (hole_path && ([hole_path count]>1)) {
             GMSPolyline *hole_poly = [GMSPolyline polylineWithPath:hole_path];
             hole_poly.strokeColor = hole_polyline_color;
             hole_poly.map = mapView_;
+
+            if (self.configModel.discGolfEnabled) {
+              CLLocationCoordinate2D basketCoord = [hole_path coordinateAtIndex:([hole_path count]-1)];
+              GMSMarker *basketMarker = [GMSMarker markerWithPosition:basketCoord];
+              basketMarker.title = [NSString stringWithFormat:@"Disc Golf Hole %d Basket", prev_hole_num];
+              basketMarker.icon = basket_icon;
+              basketMarker.map = mapView_;
+            }
           }
           hole_path = [GMSMutablePath path];
           prev_hole_id = hole_id;
+          prev_hole_num = hole_num;
+
+          if (self.configModel.discGolfEnabled) {
+            GMSMarker *basketTee = [GMSMarker markerWithPosition:coord];
+            basketTee.title = [NSString stringWithFormat:@"Disc Golf Hole %d Tee", hole_num];
+            basketTee.icon = tee_icon;
+            basketTee.map = mapView_;
+          }
         }
-        [hole_path addCoordinate:CLLocationCoordinate2DMake(latitude, longitude)];
+        [hole_path addCoordinate:coord];
       }
       if (hole_path && ([hole_path count]>1)) {
         GMSPolyline *hole_poly = [GMSPolyline polylineWithPath:hole_path];
