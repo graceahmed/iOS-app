@@ -16,6 +16,7 @@
   int           maxTrailTypeId;
   int           maxPoiTypeId;
 
+  int           numTrailDifficultyGroups;
   int          *trailTypeIdSortOrder;
   int          *trailTypeIdToDifficultyGroup;
   int          *trailTypeIdToSpanId;
@@ -88,6 +89,7 @@
       }
       groupnum++;
     }
+    numTrailDifficultyGroups = groupnum;
 
     for(NSString *span in t_spans) {
       int span_id = [trailTypeNameToId[span] intValue];
@@ -183,7 +185,16 @@
     if (!enabled) {
       color = [UIColor colorWithWhite:0.75f alpha:0.5f];
     } else {
-      color = [UIColor redColor];
+      int difficulty = trailTypeIdToDifficultyGroup[trailTypeId];
+      if (difficulty==-1) difficulty=numTrailDifficultyGroups-1;
+      double hue = (1.0f-(difficulty/(numTrailDifficultyGroups-1)))*0.3333333;
+      if ((self.configModel.mapType==kGMSTypeNormal) ||
+          (self.configModel.mapType==kGMSTypeTerrain))
+      {
+        color = [UIColor colorWithHue:hue saturation:1.0f brightness:0.8f alpha:1.0f];
+      } else {
+        color = [UIColor colorWithHue:hue saturation:0.5f brightness:1.0f alpha:1.0f];
+      }
     }
     [self.trailTypeColor setObject:color forKey:ttid];
   }
@@ -193,9 +204,15 @@
 - (UIColor*)getDiscGolfPathColor {
   if (self.discGolfPathColor==nil) {
     if (!self.configModel.discGolfEnabled) {
-      self.discGolfPathColor = [UIColor colorWithWhite:0.75f alpha:0.5f];
+      self.discGolfPathColor = [UIColor colorWithWhite:0.0f alpha:0.0f];
     } else {
-      self.discGolfPathColor = [UIColor redColor];
+      if ((self.configModel.mapType==kGMSTypeNormal) ||
+          (self.configModel.mapType==kGMSTypeTerrain))
+      {
+        self.discGolfPathColor = [UIColor colorWithHue:0.833f saturation:1.0f brightness:0.8f alpha:1.0f];
+      } else {
+        self.discGolfPathColor = [UIColor colorWithHue:0.833f saturation:5.0f brightness:1.0f alpha:1.0f];
+      }
     }
   }
   return(self.discGolfPathColor);

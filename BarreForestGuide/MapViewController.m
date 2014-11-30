@@ -219,6 +219,7 @@
           if (hole_path && ([hole_path count]>1)) {
             GMSPolyline *hole_poly = [GMSPolyline polylineWithPath:hole_path];
             hole_poly.strokeColor = hole_polyline_color;
+            hole_poly.strokeWidth = 2.0f;
             hole_poly.map = mapView_;
 
             if (self.configModel.discGolfEnabled) {
