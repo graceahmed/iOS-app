@@ -97,7 +97,7 @@
 
     NSString *trailQuerySQL =
         [NSString stringWithFormat:@"select map_object_id,lattitude,longitude from trail,coordinate " \
-                                    "where coordinate.map_object_id=trail.id and summer_uses_id=? order by map_object_id,seq;"];
+                                    "where coordinate.map_object_id=trail.id and %s_uses_id=? order by map_object_id,seq;", season];
     NSString *trailTypeQuerySQL =
         [NSString stringWithFormat:@"select distinct %s_uses_id from trail;", season];
     sqlite3_stmt *trailQueryStmt = nil;
