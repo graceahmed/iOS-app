@@ -19,8 +19,9 @@
   int           numTrailDifficultyGroups;
   int          *trailTypeIdSortOrder;
   int          *trailTypeIdToDifficultyGroup;
-  int          *trailTypeIdToSpanId;
   int          *trailTypeIdIsSpan;
+  NSDictionary *trailTypeIdToSpanIds;
+  NSDictionary *trailSpanIdToTypeIds;
 
   int          *poiTypeIdSortOrder;
 }
@@ -50,7 +51,6 @@
 
     trailTypeIdSortOrder         = (int*)calloc(maxTrailTypeId+1, sizeof(int));
     trailTypeIdToDifficultyGroup = (int*)calloc(maxTrailTypeId+1, sizeof(int));
-    trailTypeIdToSpanId          = (int*)calloc(maxTrailTypeId+1, sizeof(int));
     trailTypeIdIsSpan            = (int*)calloc(maxTrailTypeId+1, sizeof(int));
 
     poiTypeIdSortOrder           = (int*)calloc(maxPoiTypeId+1, sizeof(int));
@@ -67,7 +67,6 @@
     for(int i=0; i<=maxTrailTypeId; i++) {
       trailTypeIdSortOrder[i] = maxTrailTypeId+1;
       trailTypeIdToDifficultyGroup[i] = -1;
-      trailTypeIdToSpanId[i] = -1;
     }
     for(int i=0; i<=maxPoiTypeId; i++) {
       poiTypeIdSortOrder[i] = maxPoiTypeId+1;
@@ -86,14 +85,36 @@
     }
     numTrailDifficultyGroups = groupnum;
 
+    NSMutableDictionary *trailTypeIdToSpanIdsMut = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *trailSpanIdToTypeIdsMut = [[NSMutableDictionary alloc] init];
     for(NSString *span in t_spans) {
-      int span_id = [trailTypeNameToId[span] intValue];
+      NSNumber *span_id_num = trailTypeNameToId[span];
+      int span_id = [span_id_num intValue];
       trailTypeIdIsSpan[span_id] = 1;
       for(NSString *tname in t_spans[span]) {
-        int type_id = [trailTypeNameToId[tname] intValue];
-        trailTypeIdToSpanId[type_id] = span_id;
+        NSNumber *ttid_num = trailTypeNameToId[tname];
+        NSMutableArray *span_ids = trailTypeIdToSpanIdsMut[ttid_num];
+        if (span_ids==nil) {
+          span_ids = [[NSMutableArray alloc] init];
+          [trailTypeIdToSpanIdsMut setObject:span_ids forKey:ttid_num];
+        }
+        [span_ids addObject:span_id_num];
+        NSMutableArray *type_ids = trailSpanIdToTypeIdsMut[span_id_num];
+        if (type_ids==nil) {
+          type_ids = [[NSMutableArray alloc] init];
+          [trailSpanIdToTypeIdsMut setObject:type_ids forKey:span_id_num];
+        }
+        [type_ids addObject:ttid_num];
       }
     }
+    NSArray *ttid_nums = [trailTypeIdToSpanIdsMut allKeys];
+    for(NSNumber *ttid_num in ttid_nums)
+      trailTypeIdToSpanIdsMut[ttid_num] = [NSArray arrayWithArray:trailTypeIdToSpanIdsMut[ttid_num]];
+    trailTypeIdToSpanIds = [NSDictionary dictionaryWithDictionary:trailTypeIdToSpanIdsMut];
+    NSArray *span_id_nums = [trailSpanIdToTypeIdsMut allKeys];
+    for(NSNumber *span_id_num in span_id_nums)
+      trailSpanIdToTypeIdsMut[span_id_num] = [NSArray arrayWithArray:trailSpanIdToTypeIdsMut[span_id_num]];
+    trailSpanIdToTypeIds = [NSDictionary dictionaryWithDictionary:trailSpanIdToTypeIdsMut];
 
     order = 0;
     for(NSString *pname in t_poi) {
@@ -127,7 +148,6 @@
 - (void)dealloc {
   free(trailTypeIdSortOrder);
   free(trailTypeIdToDifficultyGroup);
-  free(trailTypeIdToSpanId);
   free(trailTypeIdIsSpan);
   //[super dealloc]; // Not available to do in conjunction with ARC
 }
@@ -248,17 +268,24 @@
 
 - (void)setTrailTypeIdEnable:(int)trailTypeId enable:(BOOL)enable {
   if ((trailTypeId>=0) && (trailTypeId<=maxTrailTypeId)) {
-    NSNumber *ttid = [NSNumber numberWithInt:trailTypeId];
-    NSNumber *val;
-    if (enable) [self.configModel.trailTypeEnabled setObject:@1 forKey:ttid];
-      else      [self.configModel.trailTypeEnabled removeObjectForKey:ttid];
+    NSNumber *ttidnum = [NSNumber numberWithInt:trailTypeId];
+    if (enable) [self.configModel.trailTypeEnabled setObject:@1 forKey:ttidnum];
+      else      [self.configModel.trailTypeEnabled removeObjectForKey:ttidnum];
+    for(NSNumber *span_id_num in trailTypeIdToSpanIds[ttidnum]) {
+      BOOL span_enable = enable;
+      for(NSNumber *spanttidnum in trailSpanIdToTypeIds[span_id_num]) {
+        span_enable = span_enable || [self.configModel.trailTypeEnabled[spanttidnum] boolValue];
+      }
+      if (span_enable) [self.configModel.trailTypeEnabled setObject:@1 forKey:span_id_num];
+        else           [self.configModel.trailTypeEnabled removeObjectForKey:span_id_num];
+    }
   }
 }
 
 - (void)toggleTrailTypeIdEnable:(int)trailTypeId {
   if ((trailTypeId>=0) && (trailTypeId<=maxTrailTypeId)) {
-    NSNumber *ttid = [NSNumber numberWithInt:trailTypeId];
-    BOOL enabled = [[self.configModel.trailTypeEnabled objectForKey:ttid] boolValue];
+    NSNumber *ttidnum = [NSNumber numberWithInt:trailTypeId];
+    BOOL enabled = [[self.configModel.trailTypeEnabled objectForKey:ttidnum] boolValue];
     [self setTrailTypeIdEnable:trailTypeId enable:!enabled];
   }
 }
@@ -272,17 +299,16 @@
 
 - (void)setPoiTypeIdEnable:(int)poiTypeId enable:(BOOL)enable {
   if ((poiTypeId>=0) && (poiTypeId<=maxPoiTypeId)) {
-    NSNumber *ttid = [NSNumber numberWithInt:poiTypeId];
-    NSNumber *val;
-    if (enable) [self.configModel.poiTypeEnabled setObject:@1 forKey:ttid];
-      else      [self.configModel.poiTypeEnabled removeObjectForKey:ttid];
+    NSNumber *ptidnum = [NSNumber numberWithInt:poiTypeId];
+    if (enable) [self.configModel.poiTypeEnabled setObject:@1 forKey:ptidnum];
+      else      [self.configModel.poiTypeEnabled removeObjectForKey:ptidnum];
   }
 }
 
 - (void)togglePoiTypeIdEnable:(int)poiTypeId {
   if ((poiTypeId>=0) && (poiTypeId<=maxPoiTypeId)) {
-    NSNumber *ttid = [NSNumber numberWithInt:poiTypeId];
-    BOOL enabled = [[self.configModel.poiTypeEnabled objectForKey:ttid] boolValue];
+    NSNumber *ptidnum = [NSNumber numberWithInt:poiTypeId];
+    BOOL enabled = [[self.configModel.poiTypeEnabled objectForKey:ptidnum] boolValue];
     [self setPoiTypeIdEnable:poiTypeId enable:!enabled];
   }
 }
