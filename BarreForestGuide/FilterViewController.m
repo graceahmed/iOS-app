@@ -104,8 +104,8 @@
     NSLog(@"Failed to open database!");
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-  [super viewDidDisappear:animated];
+- (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
   //self.configModel.mapTracksGPS = [self.autoFollowGPS isOn];
   [self.trailColorUtil invalidateColorCache];
   [self.configModel saveToDefaults];
