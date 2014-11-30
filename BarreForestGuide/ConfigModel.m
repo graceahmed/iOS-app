@@ -18,8 +18,8 @@
     self.mapType = kGMSTypeNormal;
     self.mapSeason = auto_map_season;
     self.sharingEnabled = NO;
-    self.trailTypeEnabled = [[NSMutableDictionary alloc] init];
-    self.poiTypeEnabled = [[NSMutableDictionary alloc] init];
+    self.trailTypeEnabled = nil;
+    self.poiTypeEnabled = nil;
     self.discGolfEnabled = NO;
   }
   return(self);

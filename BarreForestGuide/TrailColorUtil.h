@@ -23,9 +23,11 @@
 
 - (int)getTrailTypeSortOrder:(int)trailTypeId;
 - (BOOL)isTrailTypeIdSpan:(int)trailTypeId;
+- (void)setTrailTypeIdEnable:(int)trailTypeId enable:(BOOL)enable;
 - (void)toggleTrailTypeIdEnable:(int)trailTypeId;
 
 - (int)getPoiTypeSortOrder:(int)poiTypeId;
+- (void)setPoiTypeIdEnable:(int)poiTypeId enable:(BOOL)enable;
 - (void)togglePoiTypeIdEnable:(int)poiTypeId;
 
 @end

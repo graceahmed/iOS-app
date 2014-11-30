@@ -44,11 +44,6 @@
     self.trailTypeColor = [[NSMutableDictionary alloc] init];
     self.discGolfPathColor = nil;
 
-    if (self.configModel.trailTypeEnabled==nil)
-      self.configModel.trailTypeEnabled = [[NSMutableDictionary alloc] init];
-    if (self.configModel.poiTypeEnabled==nil)
-      self.configModel.poiTypeEnabled = [[NSMutableDictionary alloc] init];
-
     maxTrailTypeId = -1;
     maxPoiTypeId = -1;
     [self queryDatabaseForTypeNames];
@@ -67,7 +62,7 @@
                          @[ @"Extreme", @"Unmaintained" ] ];
     NSDictionary *t_spans = @{ @"SkiShoe":      @[ @"Ski", @"Shoe" ],
                                @"MotorSkiShoe": @[ @"Motor", @"Ski", @"Shoe" ] };
-    NSArray *t_poi = @[ @"Overlook", @"Parking Lot", @"Store" ];
+    NSArray *t_poi = @[ @"Overlook", @"Historical Sign", @"Parking Lot", @"Store" ];
 
     for(int i=0; i<=maxTrailTypeId; i++) {
       trailTypeIdSortOrder[i] = maxTrailTypeId+1;
@@ -106,6 +101,25 @@
       int id = [poiTypeNameToId[pname] intValue];
       poiTypeIdSortOrder[id] = order++;
     }
+
+    // Must have a fresh, uninitialized ConfigModel, so set the defaults
+    if (self.configModel.trailTypeEnabled==nil) {
+      self.configModel.trailTypeEnabled = [[NSMutableDictionary alloc] init];
+      for(int ttid=0; ttid<=maxTrailTypeId; ttid++)
+        if (trailTypeIdSortOrder[ttid]<=maxTrailTypeId)
+          [self setTrailTypeIdEnable:ttid enable:YES];
+      // If we are having to create the trailTypeEnabled object, we'll assume
+      //   that we've got a fresh ConfigModel, so we'll set the discGolfEnabled
+      //   to the default too
+      self.configModel.discGolfEnabled = true;
+    }
+    if (self.configModel.poiTypeEnabled==nil) {
+      self.configModel.poiTypeEnabled = [[NSMutableDictionary alloc] init];
+      for(int ptid=0; ptid<=maxPoiTypeId; ptid++)
+        if (poiTypeIdSortOrder[ptid]<=maxPoiTypeId)
+          [self setPoiTypeIdEnable:ptid enable:YES];
+    }
+
   }
   return(self);
 }
@@ -232,14 +246,20 @@
   return(rv);
 }
 
+- (void)setTrailTypeIdEnable:(int)trailTypeId enable:(BOOL)enable {
+  if ((trailTypeId>=0) && (trailTypeId<=maxTrailTypeId)) {
+    NSNumber *ttid = [NSNumber numberWithInt:trailTypeId];
+    NSNumber *val;
+    if (enable) [self.configModel.trailTypeEnabled setObject:@1 forKey:ttid];
+      else      [self.configModel.trailTypeEnabled removeObjectForKey:ttid];
+  }
+}
+
 - (void)toggleTrailTypeIdEnable:(int)trailTypeId {
   if ((trailTypeId>=0) && (trailTypeId<=maxTrailTypeId)) {
     NSNumber *ttid = [NSNumber numberWithInt:trailTypeId];
     BOOL enabled = [[self.configModel.trailTypeEnabled objectForKey:ttid] boolValue];
-    NSNumber *val;
-    if (enabled) val = @0;
-      else       val = @1;
-    [self.configModel.trailTypeEnabled setObject:val forKey:ttid];
+    [self setTrailTypeIdEnable:trailTypeId enable:!enabled];
   }
 }
 
@@ -250,14 +270,20 @@
   return(rv);
 }
 
+- (void)setPoiTypeIdEnable:(int)poiTypeId enable:(BOOL)enable {
+  if ((poiTypeId>=0) && (poiTypeId<=maxPoiTypeId)) {
+    NSNumber *ttid = [NSNumber numberWithInt:poiTypeId];
+    NSNumber *val;
+    if (enable) [self.configModel.poiTypeEnabled setObject:@1 forKey:ttid];
+      else      [self.configModel.poiTypeEnabled removeObjectForKey:ttid];
+  }
+}
+
 - (void)togglePoiTypeIdEnable:(int)poiTypeId {
   if ((poiTypeId>=0) && (poiTypeId<=maxPoiTypeId)) {
-    NSNumber *ptid = [NSNumber numberWithInt:poiTypeId];
-    BOOL enabled = [[self.configModel.poiTypeEnabled objectForKey:ptid] boolValue];
-    NSNumber *val;
-    if (enabled) val = @0;
-      else       val = @1;
-    [self.configModel.poiTypeEnabled setObject:val forKey:ptid];
+    NSNumber *ttid = [NSNumber numberWithInt:poiTypeId];
+    BOOL enabled = [[self.configModel.poiTypeEnabled objectForKey:ttid] boolValue];
+    [self setPoiTypeIdEnable:poiTypeId enable:!enabled];
   }
 }
 
