@@ -34,6 +34,8 @@
 		6E661E3B19F6730600481D4D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E661E3A19F6730600481D4D /* QuartzCore.framework */; };
 		6E661E3D19F6731200481D4D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E661E3C19F6731200481D4D /* SystemConfiguration.framework */; };
 		6E661E3F19F74AC300481D4D /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E661E3E19F74AC300481D4D /* libsqlite3.dylib */; };
+		6E73C6D21A2CCFD200E44A28 /* button_camera_40.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E73C6D01A2CCFD200E44A28 /* button_camera_40.png */; };
+		6E73C6D31A2CCFD200E44A28 /* button_myloc_40.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E73C6D11A2CCFD200E44A28 /* button_myloc_40.png */; };
 		6E78103719F77AAE00F2AE80 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E78103619F77AAE00F2AE80 /* GoogleMaps.framework */; };
 		6E78103919F77AFC00F2AE80 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6E78103819F77AFC00F2AE80 /* GoogleMaps.bundle */; };
 		6E816E7F19F8C44D00350881 /* BarreForestGuide.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6E816E7E19F8C44D00350881 /* BarreForestGuide.sqlite */; };
@@ -95,6 +97,8 @@
 		6E661E3A19F6730600481D4D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		6E661E3C19F6731200481D4D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		6E661E3E19F74AC300481D4D /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		6E73C6D01A2CCFD200E44A28 /* button_camera_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_camera_40.png; sourceTree = "<group>"; };
+		6E73C6D11A2CCFD200E44A28 /* button_myloc_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_myloc_40.png; sourceTree = "<group>"; };
 		6E78103619F77AAE00F2AE80 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		6E78103819F77AFC00F2AE80 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 		6E816E7E19F8C44D00350881 /* BarreForestGuide.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = BarreForestGuide.sqlite; sourceTree = "<group>"; };
@@ -263,6 +267,8 @@
 		A01544261A1E9B6500C26FB1 /* buttonImages */ = {
 			isa = PBXGroup;
 			children = (
+				6E73C6D01A2CCFD200E44A28 /* button_camera_40.png */,
+				6E73C6D11A2CCFD200E44A28 /* button_myloc_40.png */,
 				A01544271A1E9B6500C26FB1 /* button_menu_40.png */,
 				A01544281A1E9B6500C26FB1 /* filter_button_40.png */,
 			);
@@ -354,6 +360,8 @@
 			files = (
 				A015441F1A1E99F800C26FB1 /* ParkingLot.png in Resources */,
 				6E20F9831A2CBFDF008DB66C /* HistoricalSign.png in Resources */,
+				6E73C6D31A2CCFD200E44A28 /* button_myloc_40.png in Resources */,
+				6E73C6D21A2CCFD200E44A28 /* button_camera_40.png in Resources */,
 				6E661E0519F4C68D00481D4D /* Main.storyboard in Resources */,
 				6E816E7F19F8C44D00350881 /* BarreForestGuide.sqlite in Resources */,
 				6E661E0A19F4C68D00481D4D /* LaunchScreen.xib in Resources */,
