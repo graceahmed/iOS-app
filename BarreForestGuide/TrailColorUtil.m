@@ -242,13 +242,14 @@
     } else {
       int difficulty = trailTypeIdToDifficultyGroup[trailTypeId];
       if (difficulty==-1) difficulty=numTrailDifficultyGroups-1;
-      double hue = (1.0f-(difficulty/(numTrailDifficultyGroups-1)))*0.3333333;
+      double hue = (1.0f-(((double)difficulty)/((double)(numTrailDifficultyGroups-1))))*0.20f+0.0333f+0.025;
+      //NSLog(@"difficulty=%d, hue=%f", difficulty, hue);
       if ((self.configModel.mapType==kGMSTypeNormal) ||
           (self.configModel.mapType==kGMSTypeTerrain))
       {
         color = [UIColor colorWithHue:hue saturation:1.0f brightness:0.8f alpha:1.0f];
       } else {
-        color = [UIColor colorWithHue:hue saturation:0.5f brightness:1.0f alpha:1.0f];
+        color = [UIColor colorWithHue:hue saturation:0.8f brightness:0.9f alpha:1.0f];
       }
     }
     [self.trailTypeColor setObject:color forKey:ttid];
