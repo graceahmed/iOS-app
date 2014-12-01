@@ -72,6 +72,13 @@
   [super viewWillDisappear:animated];
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size
+       withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+  //NSLog(@"viewWillTransitionToSize: size=(%f,%f)",size.width,size.height);
+  mapView_.frame = CGRectMake(0, 0, size.width, size.height);
+}
+
 - (void)drawMapObjects {
   [mapView_ clear];
   if (markerInfoContentView_) {
