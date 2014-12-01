@@ -13,19 +13,28 @@
 
 @property ConfigModel          *configModel;
 @property NSMutableDictionary  *trailTypeColor;
+@property NSMutableDictionary  *trailTypeWidth;
 @property UIColor              *discGolfPathColor;
+@property NSNumber             *discGolfPathWidth;
 
 + (TrailColorUtil*)getTrailColorUtil;
 - (void)invalidateColorCache;
 
 - (UIColor*)getTrailTypeColor:(int)trailTypeID;
+- (CGFloat )getTrailTypeWidth:(int)trailTypeID;
 - (UIColor*)getDiscGolfPathColor;
+- (CGFloat )getDiscGolfPathWidth;
 
 - (int)getTrailTypeSortOrder:(int)trailTypeId;
+- (int)getTrailTypeOtherId;
 - (BOOL)isTrailTypeIdSpan:(int)trailTypeId;
+- (BOOL)isTrailTypeIdOther:(int)trailTypeId;
+- (void)setTrailTypeIdEnable:(int)trailTypeId enable:(BOOL)enable;
 - (void)toggleTrailTypeIdEnable:(int)trailTypeId;
+- (NSString*)getTrailTypeRename:(int)trailTypeId;
 
 - (int)getPoiTypeSortOrder:(int)poiTypeId;
+- (void)setPoiTypeIdEnable:(int)poiTypeId enable:(BOOL)enable;
 - (void)togglePoiTypeIdEnable:(int)poiTypeId;
 
 @end

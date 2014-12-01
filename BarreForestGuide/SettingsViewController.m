@@ -61,20 +61,13 @@ map_season_t rowToSeason(int row) {
   currentMapTypeRow = mapTypeToRow(self.configModel.mapType);
   currentSeasonRow = seasonToRow(self.configModel.mapSeason);
   [self.autoFollowGPS setOn:self.configModel.mapTracksGPS animated:NO];
-
-  // FIXME - remove
-  if (self.configModel.trailTypeEnabled==nil)
-    self.configModel.trailTypeEnabled = [[NSMutableDictionary alloc] init];
-  [self.configModel.trailTypeEnabled setObject:@1 forKey:@1];
-  [self.configModel.trailTypeEnabled setObject:@1 forKey:@6];
-  [self.trailColorUtil invalidateColorCache];
-  self.configModel.sharingEnabled = YES;
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-  [super viewDidDisappear:animated];
+- (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
   self.configModel.mapTracksGPS = [self.autoFollowGPS isOn];
   [self.configModel saveToDefaults];
+  [self.trailColorUtil invalidateColorCache];
 }
 
 - (UITableViewCell*)tableView:(UITableView*)tableView 
