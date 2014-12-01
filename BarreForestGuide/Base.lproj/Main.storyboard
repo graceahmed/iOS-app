@@ -43,18 +43,20 @@
                                     <segue destination="Jwo-uM-ajR" kind="show" id="KI3-Vy-ZWr"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ycT-XD-pUz">
-                                <rect key="frame" x="508" y="570" width="81" height="30"/>
-                                <state key="normal" title="MyLocation">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ycT-XD-pUz">
+                                <rect key="frame" x="549" y="540" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="GuY-gA-Lt9"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="MyLocation" image="button_myloc_40.png"/>
                                 <connections>
                                     <action selector="didTapMyLocation" destination="BYZ-38-t0r" eventType="touchUpInside" id="0Jk-4z-Lji"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Amz-al-JVW">
-                                <rect key="frame" x="486" y="530" width="103" height="30"/>
-                                <state key="normal" title="DefaultCamera">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Amz-al-JVW">
+                                <rect key="frame" x="549" y="490" width="40" height="40"/>
+                                <state key="normal" title="DefaultCamera" image="button_camera_40.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -66,12 +68,13 @@
                         <constraints>
                             <constraint firstItem="q1D-OB-ZTM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="55" id="BZG-7m-VcP"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ycT-XD-pUz" secondAttribute="trailing" constant="-5" id="Dkg-3H-ZmX"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ycT-XD-pUz" secondAttribute="bottom" id="G5r-qx-RD3"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ycT-XD-pUz" secondAttribute="bottom" constant="20" id="G5r-qx-RD3"/>
                             <constraint firstItem="ycT-XD-pUz" firstAttribute="top" secondItem="Amz-al-JVW" secondAttribute="bottom" constant="10" id="HTj-k8-8OI"/>
                             <constraint firstItem="q1D-OB-ZTM" firstAttribute="trailing" secondItem="GOi-Tg-7gq" secondAttribute="trailing" id="PW0-Cx-8u8"/>
                             <constraint firstItem="GOi-Tg-7gq" firstAttribute="top" secondItem="q1D-OB-ZTM" secondAttribute="bottom" constant="10" id="T2Z-dy-RLu"/>
                             <constraint firstAttribute="trailingMargin" secondItem="q1D-OB-ZTM" secondAttribute="trailing" constant="-5" id="bMv-sc-vPU"/>
                             <constraint firstItem="GOi-Tg-7gq" firstAttribute="leading" secondItem="q1D-OB-ZTM" secondAttribute="leading" id="cBx-Vb-bHQ"/>
+                            <constraint firstItem="ycT-XD-pUz" firstAttribute="leading" secondItem="Amz-al-JVW" secondAttribute="leading" id="jfy-fZ-Kus"/>
                             <constraint firstItem="Amz-al-JVW" firstAttribute="trailing" secondItem="ycT-XD-pUz" secondAttribute="trailing" id="o0X-Hr-duA"/>
                         </constraints>
                     </view>
@@ -507,7 +510,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="button_camera_40.png" width="40" height="40"/>
         <image name="button_menu_40.png" width="40" height="40"/>
+        <image name="button_myloc_40.png" width="40" height="40"/>
         <image name="filter_button_40.png" width="40" height="40"/>
     </resources>
 </document>
