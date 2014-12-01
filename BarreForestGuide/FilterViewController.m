@@ -128,7 +128,7 @@
   switch(section) {
     case 0: rv = [  poiTypeIds count]; break;
     case 1: rv = [trailTypeIds count]; break;
-    case 2: rv = 1;                    break;
+    case 2: rv = 2;                    break;
     default:                           break;
   }
   return(rv);
@@ -159,8 +159,16 @@
       enabled = [self.configModel.trailTypeEnabled[trailTypeIds[row]] boolValue];
       break;
     case 2:
-      cell.textLabel.text = @"Disc Golf Holes";
-      enabled = self.configModel.discGolfEnabled;
+      switch (row) {
+        case 0:
+          cell.textLabel.text = @"Disc Golf Holes";
+          enabled = self.configModel.discGolfEnabled;
+          break;
+        case 1:
+          cell.textLabel.text = @" - Teebox and Basket Icons";
+          enabled = self.configModel.discGolfIconsEnabled;
+          break;
+      }
       break;
     default: break;
   }
@@ -186,7 +194,14 @@
       [self.trailColorUtil toggleTrailTypeIdEnable:[trailTypeIds[row] intValue]];
       break;
     case 2:
-      self.configModel.discGolfEnabled = !self.configModel.discGolfEnabled;
+      switch (row) {
+        case 0:
+          self.configModel.discGolfEnabled = !self.configModel.discGolfEnabled;
+          break;
+        case 1:
+          self.configModel.discGolfIconsEnabled = !self.configModel.discGolfIconsEnabled;
+          break;
+      }
       break;
     default: break;
   }

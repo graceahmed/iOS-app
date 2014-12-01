@@ -72,6 +72,13 @@
   [super viewWillDisappear:animated];
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size
+       withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+  //NSLog(@"viewWillTransitionToSize: size=(%f,%f)",size.width,size.height);
+  mapView_.frame = CGRectMake(0, 0, size.width, size.height);
+}
+
 - (void)drawMapObjects {
   [mapView_ clear];
   if (markerInfoContentView_) {
@@ -225,7 +232,7 @@
             hole_poly.strokeWidth = hole_polyline_width;
             hole_poly.map = mapView_;
 
-            if (self.configModel.discGolfEnabled) {
+            if (self.configModel.discGolfIconsEnabled) {
               CLLocationCoordinate2D basketCoord = [hole_path coordinateAtIndex:([hole_path count]-1)];
               GMSMarker *basketMarker = [GMSMarker markerWithPosition:basketCoord];
               basketMarker.title = [NSString stringWithFormat:@"Disc Golf Hole %d Basket", prev_hole_num];
@@ -237,7 +244,7 @@
           prev_hole_id = hole_id;
           prev_hole_num = hole_num;
 
-          if (self.configModel.discGolfEnabled) {
+          if (self.configModel.discGolfIconsEnabled) {
             GMSMarker *basketTee = [GMSMarker markerWithPosition:coord];
             basketTee.title = [NSString stringWithFormat:@"Disc Golf Hole %d Tee", hole_num];
             basketTee.icon = tee_icon;

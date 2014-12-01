@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6E20F9801A2B3B43008DB66C /* DiscGolfBasket.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E20F97E1A2B3B43008DB66C /* DiscGolfBasket.png */; };
 		6E20F9811A2B3B43008DB66C /* DiscGolfTee.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E20F97F1A2B3B43008DB66C /* DiscGolfTee.png */; };
+		6E20F9831A2CBFDF008DB66C /* HistoricalSign.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E20F9821A2CBFDF008DB66C /* HistoricalSign.png */; };
 		6E27B0DA1A25B673000916FF /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E27B0D91A25B673000916FF /* FilterViewController.m */; };
 		6E310FFD1A236F05008F5345 /* TrailColorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E310FFC1A236F05008F5345 /* TrailColorUtil.m */; };
 		6E322DE31A1B127300FE4B45 /* ConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E322DE21A1B127300FE4B45 /* ConfigModel.m */; };
@@ -42,6 +43,8 @@
 		A01544231A1E9AEE00C26FB1 /* Store.png in Resources */ = {isa = PBXBuildFile; fileRef = A01544221A1E9AEE00C26FB1 /* Store.png */; };
 		A01544291A1E9B6500C26FB1 /* button_menu_40.png in Resources */ = {isa = PBXBuildFile; fileRef = A01544271A1E9B6500C26FB1 /* button_menu_40.png */; };
 		A015442A1A1E9B6500C26FB1 /* filter_button_40.png in Resources */ = {isa = PBXBuildFile; fileRef = A01544281A1E9B6500C26FB1 /* filter_button_40.png */; };
+		A082A06C1A2640F200B5D4DF /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A082A06B1A2640F200B5D4DF /* MenuViewController.m */; };
+		A082A06D1A2640F200B5D4DF /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A082A06B1A2640F200B5D4DF /* MenuViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,7 @@
 /* Begin PBXFileReference section */
 		6E20F97E1A2B3B43008DB66C /* DiscGolfBasket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DiscGolfBasket.png; sourceTree = "<group>"; };
 		6E20F97F1A2B3B43008DB66C /* DiscGolfTee.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DiscGolfTee.png; sourceTree = "<group>"; };
+		6E20F9821A2CBFDF008DB66C /* HistoricalSign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HistoricalSign.png; sourceTree = "<group>"; };
 		6E27B0D81A25B673000916FF /* FilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterViewController.h; sourceTree = "<group>"; };
 		6E27B0D91A25B673000916FF /* FilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterViewController.m; sourceTree = "<group>"; };
 		6E310FFB1A236F05008F5345 /* TrailColorUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrailColorUtil.h; sourceTree = "<group>"; };
@@ -101,6 +105,8 @@
 		A01544221A1E9AEE00C26FB1 /* Store.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Store.png; sourceTree = "<group>"; };
 		A01544271A1E9B6500C26FB1 /* button_menu_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_menu_40.png; sourceTree = "<group>"; };
 		A01544281A1E9B6500C26FB1 /* filter_button_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filter_button_40.png; sourceTree = "<group>"; };
+		A082A06A1A26408200B5D4DF /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		A082A06B1A2640F200B5D4DF /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +144,7 @@
 		6E322DCD1A1AFE0600FE4B45 /* POI_Icons */ = {
 			isa = PBXGroup;
 			children = (
+				6E20F9821A2CBFDF008DB66C /* HistoricalSign.png */,
 				6E20F97E1A2B3B43008DB66C /* DiscGolfBasket.png */,
 				6E20F97F1A2B3B43008DB66C /* DiscGolfTee.png */,
 				A015441E1A1E99F800C26FB1 /* ParkingLot.png */,
@@ -184,8 +191,10 @@
 				6E5DEF991A1EF86E00B5B326 /* SettingsViewController.h */,
 				6E5DEF9B1A1EF92D00B5B326 /* SettingsViewController.m */,
 				6E661E0319F4C68D00481D4D /* Main.storyboard */,
-				6E84EB9D1A20076D009094A8 /* WebKitViewController.m */,
+				A082A06A1A26408200B5D4DF /* MenuViewController.h */,
+				A082A06B1A2640F200B5D4DF /* MenuViewController.m */,
 				6E84EB9F1A2007C8009094A8 /* WebKitViewController.h */,
+				6E84EB9D1A20076D009094A8 /* WebKitViewController.m */,
 				6E661E0619F4C68D00481D4D /* Images.xcassets */,
 				6E661E0819F4C68D00481D4D /* LaunchScreen.xib */,
 				6E661DF919F4C68D00481D4D /* Supporting Files */,
@@ -344,6 +353,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A015441F1A1E99F800C26FB1 /* ParkingLot.png in Resources */,
+				6E20F9831A2CBFDF008DB66C /* HistoricalSign.png in Resources */,
 				6E661E0519F4C68D00481D4D /* Main.storyboard in Resources */,
 				6E816E7F19F8C44D00350881 /* BarreForestGuide.sqlite in Resources */,
 				6E661E0A19F4C68D00481D4D /* LaunchScreen.xib in Resources */,
@@ -389,6 +399,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E661E0219F4C68D00481D4D /* MapViewController.m in Sources */,
+				A082A06C1A2640F200B5D4DF /* MenuViewController.m in Sources */,
 				6E661DFF19F4C68D00481D4D /* AppDelegate.m in Sources */,
 				6E5DEF9C1A1EF92D00B5B326 /* SettingsViewController.m in Sources */,
 				6E661DFC19F4C68D00481D4D /* main.m in Sources */,
@@ -404,6 +415,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E661E1619F4C68E00481D4D /* BarreForestGuideTests.m in Sources */,
+				A082A06D1A2640F200B5D4DF /* MenuViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

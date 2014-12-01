@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WebKitViewController : UIViewController
+@interface WebKitViewController : UIViewController <UIWebViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIWebView *webKit;
 @property NSString *url;
