@@ -21,6 +21,7 @@
     self.trailTypeEnabled = nil;
     self.poiTypeEnabled = nil;
     self.discGolfEnabled = NO;
+    self.discGolfIconsEnabled = NO;
   }
   return(self);
 }
@@ -40,6 +41,7 @@
   self.trailTypeEnabled = [decoder decodeObjectForKey:@"trailTypeEnabled"];
   self.poiTypeEnabled = [decoder decodeObjectForKey:@"poiTypeEnabled"];
   self.discGolfEnabled = [decoder decodeObjectForKey:@"discGolfEnabled"];
+  self.discGolfIconsEnabled = [decoder decodeObjectForKey:@"discGolfEnabled"];
   return(self);
 }
 
@@ -50,7 +52,7 @@
   } else {
     self = [self init];
   }
-  NSLog(@"initFromDefaults: mapTracksGPS=%d, mapType=%d, mapSeason=%d, sharingEnabled=%d, trailTypeEnabled=%@, poiTypeEnabled=%@, discGolfEnabled=%d", self.mapTracksGPS, self.mapType, self.mapSeason, self.sharingEnabled, self.trailTypeEnabled, self.poiTypeEnabled, self.discGolfEnabled);
+  NSLog(@"initFromDefaults: mapTracksGPS=%d, mapType=%d, mapSeason=%d, sharingEnabled=%d, trailTypeEnabled=%@, poiTypeEnabled=%@, discGolfEnabled=%d, discGolfIconsEnabled=%d", self.mapTracksGPS, self.mapType, self.mapSeason, self.sharingEnabled, self.trailTypeEnabled, self.poiTypeEnabled, self.discGolfEnabled, self.discGolfIconsEnabled);
   return(self);
 }
 
@@ -62,6 +64,7 @@
   [encoder encodeObject:_trailTypeEnabled forKey:@"trailTypeEnabled"];
   [encoder encodeObject:_poiTypeEnabled forKey:@"poiTypeEnabled"];
   [encoder encodeBool:_discGolfEnabled forKey:@"discGolfEnabled"];
+  [encoder encodeBool:_discGolfIconsEnabled forKey:@"discGolfIconsEnabled"];
 }
 
 - (void) saveToDefaults {
@@ -76,7 +79,7 @@
   */
 
   [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"config"];
-  NSLog(@"saveToDefaults: mapTracksGPS=%d, mapType=%d, mapSeason=%d, sharingEnabled=%d, trailTypeEnabled=%@, poiTypeEnabled=%@, discGolfEnabled=%d", self.mapTracksGPS, self.mapType, self.mapSeason, self.sharingEnabled, self.trailTypeEnabled, self.poiTypeEnabled, self.discGolfEnabled);
+  NSLog(@"saveToDefaults: mapTracksGPS=%d, mapType=%d, mapSeason=%d, sharingEnabled=%d, trailTypeEnabled=%@, poiTypeEnabled=%@, discGolfEnabled=%d, discGolfIconsEnabled=%d", self.mapTracksGPS, self.mapType, self.mapSeason, self.sharingEnabled, self.trailTypeEnabled, self.poiTypeEnabled, self.discGolfEnabled, self.discGolfIconsEnabled);
 }
 
 - (BOOL) isSummerMapSeason {
