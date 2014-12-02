@@ -238,6 +238,46 @@
               basketMarker.title = [NSString stringWithFormat:@"Disc Golf Hole %d Basket", prev_hole_num];
               basketMarker.icon = basket_icon;
               basketMarker.map = mapView_;
+            } else {
+              CLLocationCoordinate2D basketCoord = [hole_path coordinateAtIndex:([hole_path count]-1)];
+              CLLocationCoordinate2D basketBearingCoord = [hole_path coordinateAtIndex:([hole_path count]-2)];
+              CLLocationDirection basketBearing = GMSGeometryHeading(basketBearingCoord, basketCoord);
+              CLLocationCoordinate2D basketTailOne = GMSGeometryOffset(basketCoord, 5.0f, basketBearing+135);
+              CLLocationCoordinate2D basketTailTwo = GMSGeometryOffset(basketCoord, 5.0f, basketBearing+225);
+              GMSMutablePath *basketTailOnePath = [GMSMutablePath path];
+              [basketTailOnePath addCoordinate:basketCoord];
+              [basketTailOnePath addCoordinate:basketTailOne];
+              GMSPolyline *basketTailOnePoly = [GMSPolyline polylineWithPath:basketTailOnePath];
+              basketTailOnePoly.strokeColor = hole_polyline_color;
+              basketTailOnePoly.strokeWidth = hole_polyline_width;
+              basketTailOnePoly.map = mapView_;
+              GMSMutablePath *basketTailTwoPath = [GMSMutablePath path];
+              [basketTailTwoPath addCoordinate:basketCoord];
+              [basketTailTwoPath addCoordinate:basketTailTwo];
+              GMSPolyline *basketTailTwoPoly = [GMSPolyline polylineWithPath:basketTailTwoPath];
+              basketTailTwoPoly.strokeColor = hole_polyline_color;
+              basketTailTwoPoly.strokeWidth = hole_polyline_width;
+              basketTailTwoPoly.map = mapView_;
+
+              CLLocationCoordinate2D teeCoord = [hole_path coordinateAtIndex:0];
+              CLLocationCoordinate2D teeBearingCoord = [hole_path coordinateAtIndex:1];
+              CLLocationDirection teeBearing = GMSGeometryHeading(teeCoord, teeBearingCoord);
+              CLLocationCoordinate2D teeTailOne = GMSGeometryOffset(teeCoord, 5.0f, teeBearing+135);
+              CLLocationCoordinate2D teeTailTwo = GMSGeometryOffset(teeCoord, 5.0f, teeBearing+225);
+              GMSMutablePath *teeTailOnePath = [GMSMutablePath path];
+              [teeTailOnePath addCoordinate:teeCoord];
+              [teeTailOnePath addCoordinate:teeTailOne];
+              GMSPolyline *teeTailOnePoly = [GMSPolyline polylineWithPath:teeTailOnePath];
+              teeTailOnePoly.strokeColor = hole_polyline_color;
+              teeTailOnePoly.strokeWidth = hole_polyline_width;
+              teeTailOnePoly.map = mapView_;
+              GMSMutablePath *teeTailTwoPath = [GMSMutablePath path];
+              [teeTailTwoPath addCoordinate:teeCoord];
+              [teeTailTwoPath addCoordinate:teeTailTwo];
+              GMSPolyline *teeTailTwoPoly = [GMSPolyline polylineWithPath:teeTailTwoPath];
+              teeTailTwoPoly.strokeColor = hole_polyline_color;
+              teeTailTwoPoly.strokeWidth = hole_polyline_width;
+              teeTailTwoPoly.map = mapView_;
             }
           }
           hole_path = [GMSMutablePath path];
@@ -245,10 +285,10 @@
           prev_hole_num = hole_num;
 
           if (self.configModel.discGolfIconsEnabled) {
-            GMSMarker *basketTee = [GMSMarker markerWithPosition:coord];
-            basketTee.title = [NSString stringWithFormat:@"Disc Golf Hole %d Tee", hole_num];
-            basketTee.icon = tee_icon;
-            basketTee.map = mapView_;
+            GMSMarker *teeMarker = [GMSMarker markerWithPosition:coord];
+            teeMarker.title = [NSString stringWithFormat:@"Disc Golf Hole %d Tee", hole_num];
+            teeMarker.icon = tee_icon;
+            teeMarker.map = mapView_;
           }
         }
         [hole_path addCoordinate:coord];
