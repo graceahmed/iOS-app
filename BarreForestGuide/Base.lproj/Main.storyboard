@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iwK-x8-Mac">
     <dependencies>
+        <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -34,15 +35,6 @@
                                     <segue destination="CB2-6X-iUJ" kind="show" id="L1x-yr-jVr"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GOi-Tg-7gq">
-                                <rect key="frame" x="549" y="169" width="40" height="40"/>
-                                <state key="normal" title="Filter" image="filter_button_40.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="Jwo-uM-ajR" kind="show" id="KI3-Vy-ZWr"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ycT-XD-pUz">
                                 <rect key="frame" x="549" y="540" width="40" height="40"/>
                                 <constraints>
@@ -70,10 +62,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="ycT-XD-pUz" secondAttribute="trailing" constant="-5" id="Dkg-3H-ZmX"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ycT-XD-pUz" secondAttribute="bottom" constant="20" id="G5r-qx-RD3"/>
                             <constraint firstItem="ycT-XD-pUz" firstAttribute="top" secondItem="Amz-al-JVW" secondAttribute="bottom" constant="10" id="HTj-k8-8OI"/>
-                            <constraint firstItem="q1D-OB-ZTM" firstAttribute="trailing" secondItem="GOi-Tg-7gq" secondAttribute="trailing" id="PW0-Cx-8u8"/>
-                            <constraint firstItem="GOi-Tg-7gq" firstAttribute="top" secondItem="q1D-OB-ZTM" secondAttribute="bottom" constant="10" id="T2Z-dy-RLu"/>
                             <constraint firstAttribute="trailingMargin" secondItem="q1D-OB-ZTM" secondAttribute="trailing" constant="-5" id="bMv-sc-vPU"/>
-                            <constraint firstItem="GOi-Tg-7gq" firstAttribute="leading" secondItem="q1D-OB-ZTM" secondAttribute="leading" id="cBx-Vb-bHQ"/>
                             <constraint firstItem="ycT-XD-pUz" firstAttribute="leading" secondItem="Amz-al-JVW" secondAttribute="leading" id="jfy-fZ-Kus"/>
                             <constraint firstItem="Amz-al-JVW" firstAttribute="trailing" secondItem="ycT-XD-pUz" secondAttribute="trailing" id="o0X-Hr-duA"/>
                         </constraints>
@@ -149,8 +138,8 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Drn-G8-eYr" id="fd9-le-LdC">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About this App" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xjr-rb-cJp">
-                                                    <rect key="frame" x="8" y="11" width="115" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filters" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xjr-rb-cJp">
+                                                    <rect key="frame" x="8" y="11" width="47" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -162,8 +151,26 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="4B1-bi-yqZ" kind="show" id="mgG-Ae-0Er"/>
+                                            <segue destination="Jwo-uM-ajR" kind="show" id="zEv-B5-060"/>
                                         </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Y37-UL-krX">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Y37-UL-krX" id="61Z-rV-yL8">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About this App" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kra-EY-sAt">
+                                                    <rect key="frame" x="8" y="11" width="115" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="Kra-EY-sAt" secondAttribute="centerY" id="YoK-Iq-YpP"/>
+                                                <constraint firstItem="Kra-EY-sAt" firstAttribute="leading" secondItem="61Z-rV-yL8" secondAttribute="leadingMargin" id="ad4-ZL-wHN"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -513,6 +520,5 @@
         <image name="button_camera_40.png" width="40" height="40"/>
         <image name="button_menu_40.png" width="40" height="40"/>
         <image name="button_myloc_40.png" width="40" height="40"/>
-        <image name="filter_button_40.png" width="40" height="40"/>
     </resources>
 </document>
