@@ -31,6 +31,7 @@
 - (void)startStopLocationUpdates;
 - (void)drawMapObjects;
 - (void)launchWebView:(id)sender;
+- (void)tapHandler:(UITapGestureRecognizer*)recognizer;
 
 @end
 

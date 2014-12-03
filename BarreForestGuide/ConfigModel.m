@@ -41,7 +41,7 @@
   self.trailTypeEnabled = [decoder decodeObjectForKey:@"trailTypeEnabled"];
   self.poiTypeEnabled = [decoder decodeObjectForKey:@"poiTypeEnabled"];
   self.discGolfEnabled = [decoder decodeObjectForKey:@"discGolfEnabled"];
-  self.discGolfIconsEnabled = [decoder decodeObjectForKey:@"discGolfEnabled"];
+  self.discGolfIconsEnabled = [decoder decodeObjectForKey:@"discGolfIconsEnabled"];
   return(self);
 }
 
