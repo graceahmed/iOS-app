@@ -236,6 +236,59 @@
       GMSMutablePath *hole_path = nil;
       int prev_hole_id = -1;
       int prev_hole_num = -1;
+
+      GMSPolyline* (^drawMapArrowOnPath)(GMSMutablePath*, int, int, BOOL) =
+          ^(GMSMutablePath* path, int at_idx, int toward_idx, BOOL reversed) {
+        /* Negative indexes index from the back of the path */
+        if (    at_idx < 0)     at_idx =     at_idx+[path count];
+        if (toward_idx < 0) toward_idx = toward_idx+[path count];
+        CLLocationCoordinate2D atCoord = [path coordinateAtIndex:at_idx];
+        CLLocationCoordinate2D towardCoord = [path coordinateAtIndex:toward_idx];
+        CLLocationDirection bearing = GMSGeometryHeading(atCoord, towardCoord);
+        if (reversed) bearing += 180.0f;
+        CLLocationCoordinate2D tailOneCoord = GMSGeometryOffset(atCoord, 5.0f, bearing+135);
+        CLLocationCoordinate2D tailTwoCoord = GMSGeometryOffset(atCoord, 5.0f, bearing+225);
+        GMSMutablePath *tailOnePath = [GMSMutablePath path];
+        [tailOnePath addCoordinate:tailOneCoord];
+        [tailOnePath addCoordinate:atCoord];
+        [tailOnePath addCoordinate:tailTwoCoord];
+        GMSPolyline *poly = [GMSPolyline polylineWithPath:tailOnePath];
+        return(poly);
+      };
+      void (^addHoleToMap)(GMSMutablePath*,int) = ^(GMSMutablePath *path, int hole_num) {
+        if (path && ([path count]>1)) {
+          GMSPolyline *hole_poly = [GMSPolyline polylineWithPath:path];
+          hole_poly.strokeColor = hole_polyline_color;
+          hole_poly.strokeWidth = hole_polyline_width;
+          hole_poly.title = [NSString stringWithFormat:@"Disc Golf Hole %d", hole_num];
+          hole_poly.tappable = YES;
+          hole_poly.map = mapView_;
+
+          if (self.configModel.discGolfIconsEnabled) {
+            CLLocationCoordinate2D basketCoord = [path coordinateAtIndex:([path count]-1)];
+            GMSMarker *basketMarker = [GMSMarker markerWithPosition:basketCoord];
+            basketMarker.title = [NSString stringWithFormat:@"Disc Golf Hole %d Basket", hole_num];
+            basketMarker.icon = basket_icon;
+            basketMarker.map = mapView_;
+
+            CLLocationCoordinate2D teeCoord = [path coordinateAtIndex:0];
+            GMSMarker *teeMarker = [GMSMarker markerWithPosition:teeCoord];
+            teeMarker.title = [NSString stringWithFormat:@"Disc Golf Hole %d Tee", hole_num];
+            teeMarker.icon = tee_icon;
+            teeMarker.map = mapView_;
+          } else {
+            GMSPolyline *tee_poly = drawMapArrowOnPath(path, 0, 1, NO);
+            tee_poly.strokeColor = hole_polyline_color;
+            tee_poly.strokeWidth = hole_polyline_width;
+            tee_poly.map = mapView_;
+
+            GMSPolyline *basket_poly = drawMapArrowOnPath(path, -1, -2, YES);
+            basket_poly.strokeColor = hole_polyline_color;
+            basket_poly.strokeWidth = hole_polyline_width;
+            basket_poly.map = mapView_;
+          }
+        }
+      };
       while(sqlite3_step(discGolfQueryStmt) == SQLITE_ROW) {
         int hole_id = sqlite3_column_int(discGolfQueryStmt, 0);
         int hole_num = sqlite3_column_int(discGolfQueryStmt, 1);
@@ -244,78 +297,22 @@
         //NSLog(@"hole_id %d (hole %d) (%f, %f)", hole_id, hole_num, latitude, longitude);
         CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(latitude, longitude);
         if (prev_hole_id != hole_id) {
-          if (hole_path && ([hole_path count]>1)) {
-            GMSPolyline *hole_poly = [GMSPolyline polylineWithPath:hole_path];
-            hole_poly.strokeColor = hole_polyline_color;
-            hole_poly.strokeWidth = hole_polyline_width;
-            hole_poly.title = [NSString stringWithFormat:@"Disc Golf Hole %d", hole_num];
-            hole_poly.tappable = YES;
-            hole_poly.map = mapView_;
+          addHoleToMap(hole_path, prev_hole_num);
 
-            if (self.configModel.discGolfIconsEnabled) {
-              CLLocationCoordinate2D basketCoord = [hole_path coordinateAtIndex:([hole_path count]-1)];
-              GMSMarker *basketMarker = [GMSMarker markerWithPosition:basketCoord];
-              basketMarker.title = [NSString stringWithFormat:@"Disc Golf Hole %d Basket", prev_hole_num];
-              basketMarker.icon = basket_icon;
-              basketMarker.map = mapView_;
-            } else {
-              GMSPolyline *tee_poly = [self drawMapArrowOnPath:hole_path atPathIndex:0 withBearingIndex:1 reversed:NO];
-              tee_poly.strokeColor = hole_polyline_color;
-              tee_poly.strokeWidth = hole_polyline_width;
-              tee_poly.map = mapView_;
-
-              GMSPolyline *basket_poly = [self drawMapArrowOnPath:hole_path atPathIndex:-1 withBearingIndex:-2 reversed:YES];
-              basket_poly.strokeColor = hole_polyline_color;
-              basket_poly.strokeWidth = hole_polyline_width;
-              basket_poly.map = mapView_;
-            }
-          }
           hole_path = [GMSMutablePath path];
           prev_hole_id = hole_id;
           prev_hole_num = hole_num;
-
-          if (self.configModel.discGolfIconsEnabled) {
-            GMSMarker *teeMarker = [GMSMarker markerWithPosition:coord];
-            teeMarker.title = [NSString stringWithFormat:@"Disc Golf Hole %d Tee", hole_num];
-            teeMarker.icon = tee_icon;
-            teeMarker.map = mapView_;
-          }
         }
         [hole_path addCoordinate:coord];
       }
-      if (hole_path && ([hole_path count]>1)) {
-        GMSPolyline *hole_poly = [GMSPolyline polylineWithPath:hole_path];
-        hole_poly.strokeColor = hole_polyline_color;
-        hole_poly.map = mapView_;
-      }
+      addHoleToMap(hole_path, prev_hole_num);
+
       sqlite3_finalize(discGolfQueryStmt);
     } else
       NSLog(@"Failed to prepare database query for disc golf holes!");
 
   } else
     NSLog(@"Failed to open database!");
-}
-
-- (GMSPolyline*)drawMapArrowOnPath:(GMSMutablePath*)path
-                       atPathIndex:(int)at_idx
-                  withBearingIndex:(int)toward_idx
-                          reversed:(BOOL)reversed
-{
-  /* Negative indexes index from the back of the path */
-  if (    at_idx < 0)     at_idx =     at_idx+[path count];
-  if (toward_idx < 0) toward_idx = toward_idx+[path count];
-  CLLocationCoordinate2D atCoord = [path coordinateAtIndex:at_idx];
-  CLLocationCoordinate2D towardCoord = [path coordinateAtIndex:toward_idx];
-  CLLocationDirection bearing = GMSGeometryHeading(atCoord, towardCoord);
-  if (reversed) bearing += 180.0f;
-  CLLocationCoordinate2D tailOneCoord = GMSGeometryOffset(atCoord, 5.0f, bearing+135);
-  CLLocationCoordinate2D tailTwoCoord = GMSGeometryOffset(atCoord, 5.0f, bearing+225);
-  GMSMutablePath *tailOnePath = [GMSMutablePath path];
-  [tailOnePath addCoordinate:tailOneCoord];
-  [tailOnePath addCoordinate:atCoord];
-  [tailOnePath addCoordinate:tailTwoCoord];
-  GMSPolyline *poly = [GMSPolyline polylineWithPath:tailOnePath];
-  return(poly);
 }
 
 - (UIView*)mapView:(GMSMapView*)mapView
