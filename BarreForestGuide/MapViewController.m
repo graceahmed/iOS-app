@@ -239,45 +239,15 @@
               basketMarker.icon = basket_icon;
               basketMarker.map = mapView_;
             } else {
-              CLLocationCoordinate2D basketCoord = [hole_path coordinateAtIndex:([hole_path count]-1)];
-              CLLocationCoordinate2D basketBearingCoord = [hole_path coordinateAtIndex:([hole_path count]-2)];
-              CLLocationDirection basketBearing = GMSGeometryHeading(basketBearingCoord, basketCoord);
-              CLLocationCoordinate2D basketTailOne = GMSGeometryOffset(basketCoord, 5.0f, basketBearing+135);
-              CLLocationCoordinate2D basketTailTwo = GMSGeometryOffset(basketCoord, 5.0f, basketBearing+225);
-              GMSMutablePath *basketTailOnePath = [GMSMutablePath path];
-              [basketTailOnePath addCoordinate:basketCoord];
-              [basketTailOnePath addCoordinate:basketTailOne];
-              GMSPolyline *basketTailOnePoly = [GMSPolyline polylineWithPath:basketTailOnePath];
-              basketTailOnePoly.strokeColor = hole_polyline_color;
-              basketTailOnePoly.strokeWidth = hole_polyline_width;
-              basketTailOnePoly.map = mapView_;
-              GMSMutablePath *basketTailTwoPath = [GMSMutablePath path];
-              [basketTailTwoPath addCoordinate:basketCoord];
-              [basketTailTwoPath addCoordinate:basketTailTwo];
-              GMSPolyline *basketTailTwoPoly = [GMSPolyline polylineWithPath:basketTailTwoPath];
-              basketTailTwoPoly.strokeColor = hole_polyline_color;
-              basketTailTwoPoly.strokeWidth = hole_polyline_width;
-              basketTailTwoPoly.map = mapView_;
+              GMSPolyline *tee_poly = [self drawMapArrowOnPath:hole_path atPathIndex:0 withBearingIndex:1 reversed:NO];
+              tee_poly.strokeColor = hole_polyline_color;
+              tee_poly.strokeWidth = hole_polyline_width;
+              tee_poly.map = mapView_;
 
-              CLLocationCoordinate2D teeCoord = [hole_path coordinateAtIndex:0];
-              CLLocationCoordinate2D teeBearingCoord = [hole_path coordinateAtIndex:1];
-              CLLocationDirection teeBearing = GMSGeometryHeading(teeCoord, teeBearingCoord);
-              CLLocationCoordinate2D teeTailOne = GMSGeometryOffset(teeCoord, 5.0f, teeBearing+135);
-              CLLocationCoordinate2D teeTailTwo = GMSGeometryOffset(teeCoord, 5.0f, teeBearing+225);
-              GMSMutablePath *teeTailOnePath = [GMSMutablePath path];
-              [teeTailOnePath addCoordinate:teeCoord];
-              [teeTailOnePath addCoordinate:teeTailOne];
-              GMSPolyline *teeTailOnePoly = [GMSPolyline polylineWithPath:teeTailOnePath];
-              teeTailOnePoly.strokeColor = hole_polyline_color;
-              teeTailOnePoly.strokeWidth = hole_polyline_width;
-              teeTailOnePoly.map = mapView_;
-              GMSMutablePath *teeTailTwoPath = [GMSMutablePath path];
-              [teeTailTwoPath addCoordinate:teeCoord];
-              [teeTailTwoPath addCoordinate:teeTailTwo];
-              GMSPolyline *teeTailTwoPoly = [GMSPolyline polylineWithPath:teeTailTwoPath];
-              teeTailTwoPoly.strokeColor = hole_polyline_color;
-              teeTailTwoPoly.strokeWidth = hole_polyline_width;
-              teeTailTwoPoly.map = mapView_;
+              GMSPolyline *basket_poly = [self drawMapArrowOnPath:hole_path atPathIndex:-1 withBearingIndex:-2 reversed:YES];
+              basket_poly.strokeColor = hole_polyline_color;
+              basket_poly.strokeWidth = hole_polyline_width;
+              basket_poly.map = mapView_;
             }
           }
           hole_path = [GMSMutablePath path];
@@ -304,6 +274,28 @@
 
   } else
     NSLog(@"Failed to open database!");
+}
+
+- (GMSPolyline*)drawMapArrowOnPath:(GMSMutablePath*)path
+                       atPathIndex:(int)at_idx
+                  withBearingIndex:(int)toward_idx
+                          reversed:(BOOL)reversed
+{
+  /* Negative indexes index from the back of the path */
+  if (    at_idx < 0)     at_idx =     at_idx+[path count];
+  if (toward_idx < 0) toward_idx = toward_idx+[path count];
+  CLLocationCoordinate2D atCoord = [path coordinateAtIndex:at_idx];
+  CLLocationCoordinate2D towardCoord = [path coordinateAtIndex:toward_idx];
+  CLLocationDirection bearing = GMSGeometryHeading(atCoord, towardCoord);
+  if (reversed) bearing += 180.0f;
+  CLLocationCoordinate2D tailOneCoord = GMSGeometryOffset(atCoord, 5.0f, bearing+135);
+  CLLocationCoordinate2D tailTwoCoord = GMSGeometryOffset(atCoord, 5.0f, bearing+225);
+  GMSMutablePath *tailOnePath = [GMSMutablePath path];
+  [tailOnePath addCoordinate:tailOneCoord];
+  [tailOnePath addCoordinate:atCoord];
+  [tailOnePath addCoordinate:tailTwoCoord];
+  GMSPolyline *poly = [GMSPolyline polylineWithPath:tailOnePath];
+  return(poly);
 }
 
 - (UIView*)mapView:(GMSMapView*)mapView
