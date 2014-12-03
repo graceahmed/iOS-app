@@ -18,10 +18,13 @@
   sqlite3           *mapDataDB_;
   NSMutableArray    *mapPolylines_;
   UIView            *markerInfoContentView_;
+  GMSMarker         *phantomMarker;
+  UIImage           *phantomIcon;
   BOOL               GPStrackingEnabled;
   BOOL               GPStrackingJustEnabled;
   CLLocation        *barreForestCenter;
   GMSCameraPosition *defaultCamera;
+  CGPoint            lastTapLocation;
 }
 
 @synthesize mapView;
@@ -46,15 +49,26 @@
   defaultCamera = [ mapView_ cameraForBounds:defaultCameraBounds insets:UIEdgeInsetsZero];
   mapView_.camera = defaultCamera;
   mapView_.settings.compassButton = YES;
+  mapView_.settings.consumesGesturesInView = NO;
   //mapView_.settings.myLocationButton = YES;
   mapView_.mapType = self.configModel.mapType;
   mapView_.padding = UIEdgeInsetsMake(20, 5, 5, 5);
 
   self.defaultCameraButton.hidden = YES;
 
+  UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
+  [mapView_ addGestureRecognizer:tap];
+
+  phantomMarker = nil;
+  UIGraphicsBeginImageContext(CGSizeMake(1,1));
+  phantomIcon = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext;
+
   [mapView addSubview:mapView_];
   mapView_.delegate = self;
 }
+
+- (void)tapHandler:(id)sender { lastTapLocation = [sender locationInView:mapView_]; }
 
 - (void)viewWillAppear:(BOOL)animated {
   NSLog(@"viewWillAppear: animated=%d\n", animated);
@@ -84,6 +98,10 @@
   if (markerInfoContentView_) {
     [markerInfoContentView_ removeFromSuperview];
     markerInfoContentView_ = nil;
+  }
+  if (phantomMarker) {
+    phantomMarker.map = nil;
+    phantomMarker = nil;
   }
 
   NSString *mapDataDBName_ = [[NSBundle mainBundle]
@@ -230,6 +248,8 @@
             GMSPolyline *hole_poly = [GMSPolyline polylineWithPath:hole_path];
             hole_poly.strokeColor = hole_polyline_color;
             hole_poly.strokeWidth = hole_polyline_width;
+            hole_poly.title = [NSString stringWithFormat:@"Disc Golf Hole %d", hole_num];
+            hole_poly.tappable = YES;
             hole_poly.map = mapView_;
 
             if (self.configModel.discGolfIconsEnabled) {
@@ -405,10 +425,14 @@ double markerInfoHeightPad = 10.0f;
 }
 
 - (void)mapView:(GMSMapView*)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
-  //NSLog(@"didTapAtCoordinate: (%f, %f)", coordinate.latitude, coordinate.longitude);
+  NSLog(@"didTapAtCoordinate: (%f, %f)", coordinate.latitude, coordinate.longitude);
   if (markerInfoContentView_) {
     [markerInfoContentView_ removeFromSuperview];
     markerInfoContentView_ = nil;
+  }
+  if (phantomMarker && (phantomMarker != mapView.selectedMarker)) {
+    phantomMarker.map = nil;
+    phantomMarker = nil;
   }
 }
 
@@ -418,7 +442,30 @@ double markerInfoHeightPad = 10.0f;
     [markerInfoContentView_ removeFromSuperview];
     markerInfoContentView_ = nil;
   }
+  if (phantomMarker && (phantomMarker != marker)) {
+    phantomMarker.map = nil;
+    phantomMarker = nil;
+  }
   return(NO);
+}
+
+- (void)mapView:(GMSMapView*)mapView didTapOverlay:(GMSOverlay*)overlay {
+  NSLog(@"didTapOverlay: %@", overlay);
+  NSLog(@"tap was at (%f,%f)", lastTapLocation.x, lastTapLocation.y);
+  if (markerInfoContentView_) {
+    [markerInfoContentView_ removeFromSuperview];
+    markerInfoContentView_ = nil;
+  }
+  if (phantomMarker) {
+    phantomMarker.map = nil;
+    phantomMarker = nil;
+  }
+  CLLocationCoordinate2D pos = [mapView_.projection coordinateForPoint:lastTapLocation];
+  phantomMarker = [GMSMarker markerWithPosition:pos];
+  phantomMarker.title = overlay.title;
+  phantomMarker.icon = phantomIcon;
+  phantomMarker.map = mapView_;
+  mapView_.selectedMarker = phantomMarker;
 }
 
 /*
