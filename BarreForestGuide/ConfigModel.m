@@ -40,8 +40,8 @@
   self.sharingEnabled = [decoder decodeBoolForKey:@"sharingEnabled"];
   self.trailTypeEnabled = [decoder decodeObjectForKey:@"trailTypeEnabled"];
   self.poiTypeEnabled = [decoder decodeObjectForKey:@"poiTypeEnabled"];
-  self.discGolfEnabled = [decoder decodeObjectForKey:@"discGolfEnabled"];
-  self.discGolfIconsEnabled = [decoder decodeObjectForKey:@"discGolfIconsEnabled"];
+  self.discGolfEnabled = [decoder decodeBoolForKey:@"discGolfEnabled"];
+  self.discGolfIconsEnabled = [decoder decodeBoolForKey:@"discGolfIconsEnabled"];
   return(self);
 }
 
