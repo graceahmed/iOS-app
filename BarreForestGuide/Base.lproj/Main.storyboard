@@ -88,30 +88,28 @@
                         <sections>
                             <tableViewSection id="CQm-6G-9fJ">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="xhz-t6-NkO">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Drn-G8-eYr" userLabel="Filters Cell">
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xhz-t6-NkO" id="IUR-v9-gHt">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Drn-G8-eYr" id="fd9-le-LdC">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fc2-tk-mtW">
-                                                    <rect key="frame" x="8" y="5" width="313" height="33"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filter Trails and Points of Interest" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xjr-rb-cJp">
+                                                    <rect key="frame" x="8" y="11" width="251" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <state key="normal" title="Call Barre Town Recreation Department  ">
-                                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="phoneCall" destination="hL5-G1-I5O" eventType="touchUpInside" id="zcc-qb-tL3"/>
-                                                    </connections>
-                                                </button>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="fc2-tk-mtW" firstAttribute="leading" secondItem="IUR-v9-gHt" secondAttribute="leadingMargin" id="d6Q-2V-8Im"/>
-                                                <constraint firstAttribute="centerY" secondItem="fc2-tk-mtW" secondAttribute="centerY" id="qQA-lY-2Gh"/>
+                                                <constraint firstAttribute="centerY" secondItem="xjr-rb-cJp" secondAttribute="centerY" id="55W-OL-J2X"/>
+                                                <constraint firstItem="xjr-rb-cJp" firstAttribute="leading" secondItem="fd9-le-LdC" secondAttribute="leadingMargin" id="XJy-SX-zj9"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="Jwo-uM-ajR" kind="show" id="zEv-B5-060"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="59T-3r-nj3">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="59T-3r-nj3" userLabel="App settings Cell">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="59T-3r-nj3" id="her-6T-EcB">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -132,28 +130,58 @@
                                             <segue destination="mIy-wP-ffO" kind="show" id="lhz-iI-kwJ"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Drn-G8-eYr">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="xhz-t6-NkO" userLabel="Phone Call Cell">
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Drn-G8-eYr" id="fd9-le-LdC">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xhz-t6-NkO" id="IUR-v9-gHt">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filters" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xjr-rb-cJp">
-                                                    <rect key="frame" x="8" y="11" width="47" height="21"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fc2-tk-mtW" userLabel="Call Barre Town Recreation Department">
+                                                    <rect key="frame" x="8" y="5" width="313" height="33"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <state key="normal" title="Call Barre Town Recreation Department  ">
+                                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="phoneCall" destination="hL5-G1-I5O" eventType="touchUpInside" id="zcc-qb-tL3"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="fc2-tk-mtW" firstAttribute="leading" secondItem="IUR-v9-gHt" secondAttribute="leadingMargin" id="d6Q-2V-8Im"/>
+                                                <constraint firstAttribute="centerY" secondItem="fc2-tk-mtW" secondAttribute="centerY" id="qQA-lY-2Gh"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="hfQ-vd-rNc" userLabel="Help Cell">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hfQ-vd-rNc" id="29d-O9-3dV">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AeA-fE-fmf">
+                                                    <rect key="frame" x="143" y="8" width="97" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Application User Guide" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUQ-Gh-9g5">
+                                                    <rect key="frame" x="8" y="11" width="178" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="centerY" secondItem="xjr-rb-cJp" secondAttribute="centerY" id="55W-OL-J2X"/>
-                                                <constraint firstItem="xjr-rb-cJp" firstAttribute="leading" secondItem="fd9-le-LdC" secondAttribute="leadingMargin" id="XJy-SX-zj9"/>
-                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="subviews">
+                                                    <exclude reference="AeA-fE-fmf"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="Jwo-uM-ajR" kind="show" id="zEv-B5-060"/>
+                                            <segue destination="eJq-cp-MIv" kind="show" id="Nz8-wO-5Lk"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Y37-UL-krX">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Y37-UL-krX" userLabel="About this app Cell">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Y37-UL-krX" id="61Z-rV-yL8">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -170,6 +198,9 @@
                                                 <constraint firstItem="Kra-EY-sAt" firstAttribute="leading" secondItem="61Z-rV-yL8" secondAttribute="leadingMargin" id="ad4-ZL-wHN"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="4B1-bi-yqZ" kind="show" id="En8-Tv-3Ep"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -387,13 +418,54 @@
                     <view key="view" contentMode="scaleToFill" id="c1V-t8-XWI">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3m6-EL-6eH"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RKz-1n-k5n" userLabel="Barre Town Logo"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6dQ-8L-YtT"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MJT-LM-au8" userLabel="Created by">
+                                <rect key="frame" x="29" y="90" width="543" height="58"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tM5-aY-ux2">
+                                <rect key="frame" x="162" y="165" width="240" height="128"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="3m6-EL-6eH"/>
+                                <exclude reference="RKz-1n-k5n"/>
+                                <exclude reference="6dQ-8L-YtT"/>
+                                <exclude reference="MJT-LM-au8"/>
+                                <exclude reference="tM5-aY-ux2"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="GkX-vv-5cB"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xpi-n6-Buk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2061" y="689"/>
+        </scene>
+        <!--User Guide-->
+        <scene sceneID="lh8-Kx-d3X">
+            <objects>
+                <viewController title="User Guide" id="eJq-cp-MIv" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1bm-mf-b8D"/>
+                        <viewControllerLayoutGuide type="bottom" id="bNY-WK-BHV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="P1i-MA-jfg">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GDg-Zt-BqX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2786" y="673"/>
         </scene>
         <!--Filter-->
         <scene sceneID="TSI-ES-5uk">
