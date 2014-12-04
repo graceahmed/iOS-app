@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iwK-x8-Mac">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iwK-x8-Mac">
     <dependencies>
-        <deployment defaultVersion="1808" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -24,7 +23,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q1D-OB-ZTM">
-                                <rect key="frame" x="549" y="119" width="40" height="40"/>
+                                <rect key="frame" x="549" y="84" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="rnm-QP-48C"/>
                                 </constraints>
@@ -58,7 +57,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="q1D-OB-ZTM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="55" id="BZG-7m-VcP"/>
+                            <constraint firstItem="q1D-OB-ZTM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="BZG-7m-VcP"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ycT-XD-pUz" secondAttribute="trailing" constant="-5" id="Dkg-3H-ZmX"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ycT-XD-pUz" secondAttribute="bottom" constant="20" id="G5r-qx-RD3"/>
                             <constraint firstItem="ycT-XD-pUz" firstAttribute="top" secondItem="Amz-al-JVW" secondAttribute="bottom" constant="10" id="HTj-k8-8OI"/>
@@ -76,7 +75,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="883" y="-52"/>
+            <point key="canvasLocation" x="820" y="-46"/>
         </scene>
         <!--Menu-->
         <scene sceneID="Frd-UW-281">
