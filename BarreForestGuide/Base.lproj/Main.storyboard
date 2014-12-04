@@ -153,24 +153,6 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="jwt-9C-LsR">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jwt-9C-LsR" id="e2G-GP-9Pg">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Application User Guide" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OeP-sc-5tP">
-                                                    <rect key="frame" x="8" y="11" width="178" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="SAf-MQ-FeP" kind="show" id="ksB-LJ-le3"/>
-                                        </connections>
-                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Y37-UL-krX" userLabel="About">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Y37-UL-krX" id="61Z-rV-yL8">
@@ -456,22 +438,30 @@
                                 </constraints>
                             </imageView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="github.com/BarreForestGuide/iOS-app" translatesAutoresizingMaskIntoConstraints="NO" id="FRu-fD-ser">
-                                <rect key="frame" x="163" y="424" width="275" height="20"/>
+                                <rect key="frame" x="163" y="424" width="275" height="35"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" id="4vP-gf-aXF"/>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="30" id="8b0-6O-LRz"/>
+                                    <constraint firstAttribute="height" constant="35" id="AlD-8G-bfC"/>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="35" id="LzE-w6-cxB"/>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="35" id="ZeL-rq-ofU"/>
                                     <constraint firstAttribute="height" constant="20" id="pR3-kt-b3a"/>
                                     <constraint firstAttribute="width" constant="275" id="s1e-pm-KF6"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="uEO-Iw-hu5"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="30" id="wxv-mK-37g"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="4vP-gf-aXF"/>
+                                        <exclude reference="8b0-6O-LRz"/>
+                                        <exclude reference="LzE-w6-cxB"/>
+                                        <exclude reference="ZeL-rq-ofU"/>
+                                        <exclude reference="pR3-kt-b3a"/>
+                                        <exclude reference="uEO-Iw-hu5"/>
+                                        <exclude reference="wxv-mK-37g"/>
                                     </mask>
                                 </variation>
                             </textView>
@@ -516,24 +506,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xpi-n6-Buk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2061" y="734"/>
-        </scene>
-        <!--User Guide-->
-        <scene sceneID="lS7-gd-Dtj">
-            <objects>
-                <viewController id="SAf-MQ-FeP" userLabel="User Guide" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="qQV-4F-K2l"/>
-                        <viewControllerLayoutGuide type="bottom" id="N4p-eZ-YuM"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="clR-Wh-eCl">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nwN-D6-T2r" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2710" y="689"/>
         </scene>
         <!--Filter-->
         <scene sceneID="TSI-ES-5uk">
