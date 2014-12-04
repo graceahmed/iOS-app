@@ -23,7 +23,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q1D-OB-ZTM">
-                                <rect key="frame" x="549" y="89" width="40" height="40"/>
+                                <rect key="frame" x="549" y="119" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="rnm-QP-48C"/>
                                 </constraints>
@@ -57,7 +57,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="q1D-OB-ZTM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="25" id="BZG-7m-VcP"/>
+                            <constraint firstItem="q1D-OB-ZTM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="55" id="BZG-7m-VcP"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ycT-XD-pUz" secondAttribute="trailing" constant="-5" id="Dkg-3H-ZmX"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ycT-XD-pUz" secondAttribute="bottom" constant="20" id="G5r-qx-RD3"/>
                             <constraint firstItem="ycT-XD-pUz" firstAttribute="top" secondItem="Amz-al-JVW" secondAttribute="bottom" constant="10" id="HTj-k8-8OI"/>
@@ -408,7 +408,60 @@
                     <view key="view" contentMode="scaleToFill" id="c1V-t8-XWI">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bAW-fq-skL">
+                                <rect key="frame" x="-63" y="92" width="600" height="600"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="millstone_trails_logo.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="p9M-6X-GnR">
+                                <rect key="frame" x="42" y="90" width="600" height="600"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="town_of_barre_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="cEP-D7-xIQ">
+                                <rect key="frame" x="140" y="72" width="320" height="96"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="millstone_trails_logo.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="q82-kC-OYA">
+                                <rect key="frame" x="146" y="176" width="133" height="131"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="quarry_disc_golf_logo.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="Noe-bd-WXK">
+                                <rect key="frame" x="312" y="179" width="143" height="128"/>
+                            </imageView>
+                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" editable="NO" text="Barre Forest Guide created by: Craig Agricola, Grace Ahmed, Karlon Auger, Hayden Lam, and Brandt Newton" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iIQ-Ni-0Si">
+                                <rect key="frame" x="180" y="347" width="238" height="87"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="cc-by-sa.png" translatesAutoresizingMaskIntoConstraints="NO" id="PgV-7d-ux5">
+                                <rect key="frame" x="236" y="442" width="102" height="49"/>
+                            </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" text="github.com/BarreForestGuide/iOS-app" translatesAutoresizingMaskIntoConstraints="NO" id="FRu-fD-ser">
+                                <rect key="frame" x="163" y="509" width="275" height="71"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="cEP-D7-xIQ" secondAttribute="centerX" id="KQa-8I-9P2"/>
+                            <constraint firstAttribute="centerX" secondItem="FRu-fD-ser" secondAttribute="centerX" id="LGA-Py-m4A"/>
+                            <constraint firstItem="Noe-bd-WXK" firstAttribute="top" secondItem="q82-kC-OYA" secondAttribute="top" id="OIt-Hi-hR7"/>
+                            <constraint firstItem="FRu-fD-ser" firstAttribute="top" secondItem="PgV-7d-ux5" secondAttribute="bottom" constant="10" id="OXW-Hx-93U"/>
+                            <constraint firstItem="q82-kC-OYA" firstAttribute="top" secondItem="cEP-D7-xIQ" secondAttribute="bottom" constant="8" id="RYj-ER-9V0"/>
+                            <constraint firstItem="PgV-7d-ux5" firstAttribute="top" secondItem="iIQ-Ni-0Si" secondAttribute="bottom" constant="18" id="SGj-7E-7cW"/>
+                            <constraint firstItem="cEP-D7-xIQ" firstAttribute="trailing" secondItem="Noe-bd-WXK" secondAttribute="trailing" id="UTA-cp-6ti"/>
+                            <constraint firstAttribute="centerX" secondItem="iIQ-Ni-0Si" secondAttribute="centerX" id="VWr-A9-dVP"/>
+                            <constraint firstItem="cEP-D7-xIQ" firstAttribute="top" secondItem="3dy-Av-PaV" secondAttribute="bottom" constant="10" id="Wa5-z0-54P"/>
+                            <constraint firstItem="Noe-bd-WXK" firstAttribute="top" secondItem="cEP-D7-xIQ" secondAttribute="bottom" constant="11" id="XhG-JI-KJp"/>
+                            <constraint firstItem="iIQ-Ni-0Si" firstAttribute="top" secondItem="Noe-bd-WXK" secondAttribute="bottom" constant="30" id="hma-at-KJV"/>
+                            <constraint firstItem="q82-kC-OYA" firstAttribute="leading" secondItem="cEP-D7-xIQ" secondAttribute="leading" id="mob-Ks-YO4"/>
+                            <constraint firstAttribute="centerX" secondItem="PgV-7d-ux5" secondAttribute="centerX" id="z38-R2-hXQ"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="bAW-fq-skL"/>
+                                <exclude reference="p9M-6X-GnR"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="GkX-vv-5cB"/>
                 </viewController>
@@ -558,5 +611,9 @@
         <image name="button_camera_40.png" width="40" height="40"/>
         <image name="button_menu_40.png" width="40" height="40"/>
         <image name="button_myloc_40.png" width="40" height="40"/>
+        <image name="cc-by-sa.png" width="88" height="31"/>
+        <image name="millstone_trails_logo.jpg" width="512" height="512"/>
+        <image name="quarry_disc_golf_logo.jpg" width="1387" height="1488"/>
+        <image name="town_of_barre_logo.png" width="289" height="62"/>
     </resources>
 </document>
