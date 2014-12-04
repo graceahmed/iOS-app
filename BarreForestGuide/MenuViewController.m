@@ -16,7 +16,7 @@
 
 - (IBAction)phoneCall {
     NSLog(@"Initiating phone call...");
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"telprompt://8025400366"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"telprompt://8024799331"]];
 }
 
 @end
