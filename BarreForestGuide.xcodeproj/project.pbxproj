@@ -47,6 +47,10 @@
 		A015442A1A1E9B6500C26FB1 /* filter_button_40.png in Resources */ = {isa = PBXBuildFile; fileRef = A01544281A1E9B6500C26FB1 /* filter_button_40.png */; };
 		A082A06C1A2640F200B5D4DF /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A082A06B1A2640F200B5D4DF /* MenuViewController.m */; };
 		A082A06D1A2640F200B5D4DF /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A082A06B1A2640F200B5D4DF /* MenuViewController.m */; };
+		A0E8233C1A30235300E3A0D7 /* town_of_barre_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = A0E8233B1A30235300E3A0D7 /* town_of_barre_logo.png */; };
+		A0E8233E1A30236300E3A0D7 /* millstone_trails_logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A0E8233D1A30236300E3A0D7 /* millstone_trails_logo.jpg */; };
+		A0E823401A30237000E3A0D7 /* cc-by-sa.png in Resources */ = {isa = PBXBuildFile; fileRef = A0E8233F1A30237000E3A0D7 /* cc-by-sa.png */; };
+		A0E823421A30237D00E3A0D7 /* quarry_disc_golf_logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A0E823411A30237D00E3A0D7 /* quarry_disc_golf_logo.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +115,10 @@
 		A01544281A1E9B6500C26FB1 /* filter_button_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filter_button_40.png; sourceTree = "<group>"; };
 		A082A06A1A26408200B5D4DF /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		A082A06B1A2640F200B5D4DF /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
+		A0E8233B1A30235300E3A0D7 /* town_of_barre_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = town_of_barre_logo.png; sourceTree = "<group>"; };
+		A0E8233D1A30236300E3A0D7 /* millstone_trails_logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = millstone_trails_logo.jpg; sourceTree = "<group>"; };
+		A0E8233F1A30237000E3A0D7 /* cc-by-sa.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cc-by-sa.png"; sourceTree = "<group>"; };
+		A0E823411A30237D00E3A0D7 /* quarry_disc_golf_logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = quarry_disc_golf_logo.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,6 +265,7 @@
 		6E816E7019F8C34A00350881 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A0E8233A1A30233D00E3A0D7 /* logos */,
 				A01544261A1E9B6500C26FB1 /* buttonImages */,
 				6E322DCD1A1AFE0600FE4B45 /* POI_Icons */,
 				6E816E7E19F8C44D00350881 /* BarreForestGuide.sqlite */,
@@ -274,6 +283,17 @@
 			);
 			name = buttonImages;
 			path = BarreForestGuide/Images.xcassets/buttonImages;
+			sourceTree = "<group>";
+		};
+		A0E8233A1A30233D00E3A0D7 /* logos */ = {
+			isa = PBXGroup;
+			children = (
+				A0E823411A30237D00E3A0D7 /* quarry_disc_golf_logo.jpg */,
+				A0E8233F1A30237000E3A0D7 /* cc-by-sa.png */,
+				A0E8233D1A30236300E3A0D7 /* millstone_trails_logo.jpg */,
+				A0E8233B1A30235300E3A0D7 /* town_of_barre_logo.png */,
+			);
+			name = logos;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -358,8 +378,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0E8233C1A30235300E3A0D7 /* town_of_barre_logo.png in Resources */,
 				A015441F1A1E99F800C26FB1 /* ParkingLot.png in Resources */,
 				6E20F9831A2CBFDF008DB66C /* HistoricalSign.png in Resources */,
+				A0E823421A30237D00E3A0D7 /* quarry_disc_golf_logo.jpg in Resources */,
 				6E73C6D31A2CCFD200E44A28 /* button_myloc_40.png in Resources */,
 				6E73C6D21A2CCFD200E44A28 /* button_camera_40.png in Resources */,
 				6E661E0519F4C68D00481D4D /* Main.storyboard in Resources */,
@@ -369,9 +391,11 @@
 				A01544231A1E9AEE00C26FB1 /* Store.png in Resources */,
 				A015441D1A1E99DD00C26FB1 /* Overlook.png in Resources */,
 				6E20F9811A2B3B43008DB66C /* DiscGolfTee.png in Resources */,
+				A0E823401A30237000E3A0D7 /* cc-by-sa.png in Resources */,
 				6E78103919F77AFC00F2AE80 /* GoogleMaps.bundle in Resources */,
 				6E20F9801A2B3B43008DB66C /* DiscGolfBasket.png in Resources */,
 				A01544291A1E9B6500C26FB1 /* button_menu_40.png in Resources */,
+				A0E8233E1A30236300E3A0D7 /* millstone_trails_logo.jpg in Resources */,
 				A015442A1A1E9B6500C26FB1 /* filter_button_40.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
