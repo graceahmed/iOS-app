@@ -23,7 +23,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q1D-OB-ZTM">
-                                <rect key="frame" x="549" y="89" width="40" height="40"/>
+                                <rect key="frame" x="549" y="119" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="rnm-QP-48C"/>
                                 </constraints>
@@ -57,7 +57,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="q1D-OB-ZTM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="25" id="BZG-7m-VcP"/>
+                            <constraint firstItem="q1D-OB-ZTM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="55" id="BZG-7m-VcP"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ycT-XD-pUz" secondAttribute="trailing" constant="-5" id="Dkg-3H-ZmX"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ycT-XD-pUz" secondAttribute="bottom" constant="20" id="G5r-qx-RD3"/>
                             <constraint firstItem="ycT-XD-pUz" firstAttribute="top" secondItem="Amz-al-JVW" secondAttribute="bottom" constant="10" id="HTj-k8-8OI"/>
@@ -408,7 +408,17 @@
                     <view key="view" contentMode="scaleToFill" id="c1V-t8-XWI">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bAW-fq-skL">
+                                <rect key="frame" x="-63" y="92" width="600" height="600"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="bAW-fq-skL"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="GkX-vv-5cB"/>
                 </viewController>
